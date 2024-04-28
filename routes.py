@@ -35,10 +35,18 @@ def login():
         try:
             user = Users.query.filter_by(email=email).first_or_404()
             if user.check_password(password):
-                return 'Login Successful!',200
+                data = {
+                    "message" : "Login Successful",
+                    "status" : 200
+                }
+                return jsonify(data)
             else:
-                raise ValueError('Invalid Username or Password')
+                return jsonify({"message": "Invalid Username or Password", "status": 401})
         except Exception as e:
-            return str(e), 401
+            error = {
+                "message" : str(e),
+                "status": 500
+            }
+            return jsonify(error)
     else:
         return "Hello"
