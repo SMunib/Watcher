@@ -22,7 +22,6 @@ const isPasswordValid = pass.includes(password);
     console.log(email,password);
   };
 
-
   return (
     <>
       <div className="app">
