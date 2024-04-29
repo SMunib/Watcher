@@ -12,17 +12,7 @@ export default function Register() {
   const [username, setUsername] = useState('');
   const [passwordMatch, setPasswordMatch] = useState(true);
   const navigate = useNavigate();
-  // const handleSignIn = (e) => {
-  //   e.preventDefault();
-  //   if (password === confirmPassword) {
-  //     // Passwords match, proceed with registration
-  //     console.log(email, password, fname, lname);
-  //     // Add your registration logic here
-  //   } else {
-  //     // Passwords don't match, set passwordMatch to false
-  //     setPasswordMatch(false);
-  //   }
-  // };
+  
   const handleSignIn = (e) => {
     e.preventDefault();
     if (password === confirmPassword) {
