@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Container, Row, Col, Form, Button } from 'react-bootstrap';
 import { FiLogIn } from 'react-icons/fi';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 export default function Register() {
   const [email, setEmail] = useState('');
@@ -10,7 +11,7 @@ export default function Register() {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [username, setUsername] = useState('');
   const [passwordMatch, setPasswordMatch] = useState(true);
-
+  const navigate = useNavigate();
   // const handleSignIn = (e) => {
   //   e.preventDefault();
   //   if (password === confirmPassword) {
@@ -27,13 +28,15 @@ export default function Register() {
     if (password === confirmPassword) {
       setPasswordMatch(true);
     
-      axios.post('http://localhost:3001/Register',{fName,lName,email,password})
+      axios.post('http://localhost:5000/api/register',{username,email,password})
       .then(result=>{console.log(result)
-      if( result.data === "Email is already in use"){
-        alert('Email is already in use');
+      if( result.data.status === 200){
+        console.log(result.data.message)
+        navigate('/Login');
+        
       }
       else{
-        navigate('/Login');
+        alert(result.data.message);
       }
     }
     )

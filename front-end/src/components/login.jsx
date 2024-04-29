@@ -3,6 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { Container, Row, Col, Form, Button } from 'react-bootstrap';
 import { FiLogIn } from 'react-icons/fi';
 import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 function Login() {
   const [email, setEmail] = useState('');
@@ -28,20 +29,20 @@ const isPasswordValid = pass.includes(password);
     //   // Navigate to home page if email and password match
       
     // } 
-    axios.post('http://localhost:3001/Login',{email,password})
+    axios.post('http://localhost:5000/api/login',{email,password})
     .then(result=>{
       console.log(result)
-      if(result.data === "Success"){
+      if(result.data.status === 200){
         navigate('/priority');
       }
       else {
         // Show error message if email or password is incorrect
-        alert('Incorrect email or password. Please try again.');
+        alert(result.data.message);
       }
     })
     .catch(err=> console.log(err))
 
-    navigate('/priority');
+    // navigate('/priority');
   };
 
   return (

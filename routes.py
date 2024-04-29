@@ -17,6 +17,7 @@ def register():
             "status": 200
         }
         return jsonify(data)
+        # return "User Successfully Registered!",200
     except Exception as e:
         db.session.rollback()
         error = {
@@ -25,7 +26,7 @@ def register():
         }
         return jsonify(error)
 
-@auth_bp.route('/', methods = ['Get','POST'])
+@auth_bp.route('/login', methods = ['Get','POST'])
 def login():
     if request.method == 'POST':
         data = request.get_json()
