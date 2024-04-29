@@ -14,12 +14,34 @@ const pass=['1'];
 
 const isEmailValid = ema.includes(email);
 const isPasswordValid = pass.includes(password);
+  // const handleSignIn = (e) => {
+  //   e.preventDefault();
+  //   if(isEmailValid && isPasswordValid){
+  //       navigate('/priority');
+  //   }
+  //   console.log(email,password);
+  // };
   const handleSignIn = (e) => {
-    e.preventDefault();
-    if(isEmailValid && isPasswordValid){
+    e.preventDefault(); // Prevent default form submission
+    // const index = emails.indexOf(email);
+    // if (index !== -1 && pass[index] === password) {
+    //   // Navigate to home page if email and password match
+      
+    // } 
+    axios.post('http://localhost:3001/Login',{email,password})
+    .then(result=>{
+      console.log(result)
+      if(result.data === "Success"){
         navigate('/priority');
-    }
-    console.log(email,password);
+      }
+      else {
+        // Show error message if email or password is incorrect
+        alert('Incorrect email or password. Please try again.');
+      }
+    })
+    .catch(err=> console.log(err))
+
+    navigate('/priority');
   };
 
   return (
