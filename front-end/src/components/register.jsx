@@ -8,15 +8,14 @@ export default function Register() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [fname, setFname] = useState('');
-  const [lname, setLname] = useState('');
+  const [username, setUsername] = useState('');
   const [passwordMatch, setPasswordMatch] = useState(true);
 
   const handleSignIn = (e) => {
     e.preventDefault();
     if (password === confirmPassword) {
       // Passwords match, proceed with registration
-      console.log(email, password, fname, lname);
+      console.log(email, password, username);
       // Add your registration logic here
     } else {
       // Passwords don't match, set passwordMatch to false
@@ -35,11 +34,8 @@ export default function Register() {
               <h2 className='log1 mb-5 text-center'>Sign up </h2>
               <div className='mob1'>
                 <Form onSubmit={handleSignIn}>
-                  <Form.Group controlId="formBasicFname" className='mb-4 mx-3'>
-                    <Form.Control type="text" placeholder="Enter First Name" value={fname} onChange={(e) => setFname(e.target.value)} required className='field1' />
-                  </Form.Group>
-                  <Form.Group controlId="formBasicLname" className='mb-4 mx-3'>
-                    <Form.Control type="text" placeholder="Enter Last Name" value={lname} onChange={(e) => setLname(e.target.value)} required className='field1' />
+                  <Form.Group controlId="formBasicUsername" className='mb-4 mx-3'>
+                    <Form.Control type="text" placeholder="Enter Username" value={username} onChange={(e) => setUsername(e.target.value)} required className='field1' />
                   </Form.Group>
                   <Form.Group controlId="formBasicEmail" className='mb-4 mx-3'>
                     <Form.Control type="email" placeholder="Enter email" value={email} onChange={(e) => setEmail(e.target.value)} required className='field1' />
