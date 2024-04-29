@@ -12,18 +12,38 @@ export default function Register() {
   const [lname, setLname] = useState('');
   const [passwordMatch, setPasswordMatch] = useState(true);
 
+  // const handleSignIn = (e) => {
+  //   e.preventDefault();
+  //   if (password === confirmPassword) {
+  //     // Passwords match, proceed with registration
+  //     console.log(email, password, fname, lname);
+  //     // Add your registration logic here
+  //   } else {
+  //     // Passwords don't match, set passwordMatch to false
+  //     setPasswordMatch(false);
+  //   }
+  // };
   const handleSignIn = (e) => {
     e.preventDefault();
     if (password === confirmPassword) {
-      // Passwords match, proceed with registration
-      console.log(email, password, fname, lname);
-      // Add your registration logic here
+      setPasswordMatch(true);
+    
+      axios.post('http://localhost:3001/Register',{fName,lName,email,password})
+      .then(result=>{console.log(result)
+      if( result.data === "Email is already in use"){
+        alert('Email is already in use');
+      }
+      else{
+        navigate('/Login');
+      }
+    }
+    )
+      .catch(err=> console.log(err))   
     } else {
-      // Passwords don't match, set passwordMatch to false
+      // Passwords do not match, display error message
       setPasswordMatch(false);
     }
   };
-
   return (
     <div className='main'>
       <div className='imgDiv'>
