@@ -1,5 +1,5 @@
 from flask import Blueprint, request,jsonify
-from models import db,Users
+from models import db,Users,Movies
 
 auth_bp = Blueprint('auth', __name__)
 
@@ -40,6 +40,8 @@ def login():
                     "message" : "Login Successful",
                     "status" : 200
                 }
+                if user.isFirstTime == True:
+                    user.checkFirstTime()
                 return jsonify(data)
             else:
                 return jsonify({"message": "Invalid Username or Password", "status": 401})
@@ -51,3 +53,9 @@ def login():
             return jsonify(error)
     else:
         return "Hello"
+    
+@auth_bp.route('/select',methods = ['GET'])
+def displaygenres():
+    genres = db.session.query(Movies.Genres).distinct().all()
+    genres = [genre[0] for genre in genres]
+    return jsonify(genres)
