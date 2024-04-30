@@ -18,11 +18,6 @@ const isPasswordValid = pass.includes(password);
 
   const handleSignIn = (e) => {
     e.preventDefault(); // Prevent default form submission
-    // const index = emails.indexOf(email);
-    // if (index !== -1 && pass[index] === password) {
-    //   // Navigate to home page if email and password match
-      
-    // } 
     axios.post('http://localhost:5000/api/login',{email,password})
     .then(result=>{
       console.log(result)
