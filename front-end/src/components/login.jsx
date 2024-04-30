@@ -15,13 +15,7 @@ const pass=['1'];
 
 const isEmailValid = ema.includes(email);
 const isPasswordValid = pass.includes(password);
-  // const handleSignIn = (e) => {
-  //   e.preventDefault();
-  //   if(isEmailValid && isPasswordValid){
-  //       navigate('/priority');
-  //   }
-  //   console.log(email,password);
-  // };
+
   const handleSignIn = (e) => {
     e.preventDefault(); // Prevent default form submission
     // const index = emails.indexOf(email);
