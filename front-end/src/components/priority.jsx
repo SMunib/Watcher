@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button } from 'react-bootstrap';
-import { FiLogIn } from 'react-icons/fi';
+
 export default function priority() {
   return (
     <div className='main'>
