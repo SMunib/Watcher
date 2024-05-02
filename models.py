@@ -26,7 +26,7 @@ class Movies(db.Model):
     Title = db.Column(db.Text, nullable=False)
     Tagline = db.Column(db.Text)
     Synopsis = db.Column(db.Text)
-    Genres = db.Column(db.Text)
+    Genres = db.Column(db.String(200),nullable = False)
     AdultFilm = db.Column(db.Boolean)
     Language = db.Column(db.Text)
     ReleaseDate = db.Column(db.Text)

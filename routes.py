@@ -40,8 +40,6 @@ def login():
                     "message" : "Login Successful",
                     "status" : 200
                 }
-                if user.isFirstTime == True:
-                    user.checkFirstTime()
                 return jsonify(data)
             else:
                 return jsonify({"message": "Invalid Username or Password", "status": 401})
@@ -56,6 +54,10 @@ def login():
     
 @auth_bp.route('/select',methods = ['GET'])
 def displaygenres():
-    genres = db.session.query(Movies.Genres).distinct().all()
-    genres = [genre[0] for genre in genres]
-    return jsonify(genres)
+    genres = db.session.query(Movies.Genres).all()
+    unique_genres = set()
+    for genres_str in genres:
+        genres = genres_str[0].split(', ')
+        unique_genres.update(genres)
+    unique_genres.discard('') 
+    return jsonify(list(unique_genres))

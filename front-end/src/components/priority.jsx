@@ -1,8 +1,6 @@
 import React from 'react';
 import { Button } from 'react-bootstrap';
-import axios from 'axios';
-import { useEffect, useState } from 'react';
-
+import { FiLogIn } from 'react-icons/fi';
 export default function priority() {
     const [genres, setGenres] = useState([]);
     const [selectedGenres, setSelectedGenres] = useState([]);
