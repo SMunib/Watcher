@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 
 
 export default function priority() {
+  const [genress, setGenress] = useState([]);
     const [genres, setGenres] = useState([]);
     const [selectedGenres, setSelectedGenres] = useState([]);
     const navigate = useNavigate();
@@ -19,43 +20,7 @@ export default function priority() {
           console.error('Error fetching genres:', error);
         });
     }, []);
-      
-
-    const genress = [
-        'Telescene Film Group Productions',
-        'War',
-        'Mystery',
-        'Carousel Productions',
-        'BROSTA TV',
-        'Drama',
-        'Adventure',
-        'Romance',
-        'Action',
-        'Documentary',
-        'Thriller',
-        'Western',
-        'Fantasy',
-        'Sentai Filmworks',
-        'Horror',
-        'TV Movie',
-        'Mardock Scramble Production Committee',
-        'Vision View Entertainment',
-        'The Cartel',
-        'Animation',
-        'Pulser Productions',
-        'Science Fiction',
-        'History',
-        'Family',
-        'Crime',
-        'Rogue State',
-        'Comedy',
-        'Aniplex',
-        'Odyssey Media',
-        'Foreign',
-        'GoHands',
-        'Music'
-      ];
-      // Split genres into groups of 4
+            // Split genres into groups of 4
         const groupedGenres = genress.reduce((acc, curr, index) => {
             if (index % 4 === 0) {
             acc.push([curr]);
