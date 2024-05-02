@@ -17,7 +17,6 @@ def register():
             "status": 200
         }
         return jsonify(data)
-        # return "User Successfully Registered!",200
     except Exception as e:
         db.session.rollback()
         error = {
