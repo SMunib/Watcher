@@ -1,14 +1,12 @@
 import React from 'react';
 import { Button } from 'react-bootstrap';
 import axios from 'axios';
-import { FiLogIn } from 'react-icons/fi';
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 
 export default function priority() {
-  const [genress, setGenress] = useState([]);
-    const [genres, setGenres] = useState([]);
+    const [genress, setGenres] = useState([]);
     const [selectedGenres, setSelectedGenres] = useState([]);
     const navigate = useNavigate();
     useEffect(() => {
@@ -43,26 +41,20 @@ export default function priority() {
           const handleNextClick = () => {
             console.log('Selected genres for next:', selectedGenres);
             navigate('/init_movie');
-            axios.post('http://localhost:5000/api/genres',{selectedGenres})
-            .then(result=>{
-              console.log(result)
-              if(result.data.status === 200){
-                navigate('/init_movie');
-              }
-                else {
-                  // Show error message if email or password is incorrect
-                  
-                  alert(result.data.message);
-                }
-                })
-                .catch(err=> console.log(err))
+          
                 
             };
+          // const handleskip = () => {
+          //   navigate('/home');
+          // };
       
   return (
     <div className='main'>
         <div className='imgDiv'></div>
         <div className='in'>
+          <div className='select'>
+          Please select your 3 favorite genres
+          </div>
             {groupedGenres.map((row, rowIndex) => (
             <div key={rowIndex} className='row'>
                 {row.map((genre, colIndex) => (
@@ -76,11 +68,14 @@ export default function priority() {
                 ))}
             </div>
             ))}
-        
+       
                 <div className='row1'>
                     <Button variant="primary" type="submit" className="btn-oval mx-3 mb-3" onClick={handleNextClick}>
                         Next
                     </Button>
+                    <Link to="/home" className="skiplink mt-3 mb-2" >
+                      Click here to skip
+                    </Link>
                 </div>
         </div>        
     </div>
