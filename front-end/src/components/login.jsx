@@ -31,7 +31,7 @@ const isPasswordValid = pass.includes(password);
     })
     .catch(err=> console.log(err))
 
-    // navigate('/priority');
+     navigate('/priority');
   };
 
   return (

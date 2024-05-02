@@ -199,17 +199,17 @@ body {
     display: flex;
     flex-direction: row;
     width: 110%;
-    height: 20%;
+    height: 10.5%;
     padding-top:20px;
-    padding-right: 70px;
+    padding-right: 90px;
     gap: 20px;
   }
   
   .column {
     /* flex: 1; */
-    padding: 10px; 
+    padding-right: 10px; 
      border: 1px solid white;
-     width: 40% !important; 
+     width: 20% !important; 
   
   }
   .row1{
@@ -220,4 +220,10 @@ body {
 
     /* width: 50%; */
    
+  }
+  .column.selected {
+    /* Styles for selected columns */
+    background-color: #f0f0f0; /* Example background color */
+    border-color: #ff0000; /* Example border color */
+    color: #000; /* Example text color */
   }
