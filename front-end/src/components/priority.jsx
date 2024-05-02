@@ -1,12 +1,17 @@
 import React from 'react';
 import { Button } from 'react-bootstrap';
+import axios from 'axios';
 import { FiLogIn } from 'react-icons/fi';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
+
 export default function priority() {
     const [genres, setGenres] = useState([]);
     const [selectedGenres, setSelectedGenres] = useState([]);
-
+    const navigate = useNavigate();
     useEffect(() => {
-      axios.get('http://localhost:5000/genres')
+      axios.get('http://localhost:5000/api/select')
         .then(response => {
           setGenres(response.data);
         })
@@ -14,6 +19,8 @@ export default function priority() {
           console.error('Error fetching genres:', error);
         });
     }, []);
+      
+
     const genress = [
         'Telescene Film Group Productions',
         'War',
@@ -70,8 +77,22 @@ export default function priority() {
           
           const handleNextClick = () => {
             console.log('Selected genres for next:', selectedGenres);
-            // Add your logic here to navigate to the next page or perform any other action
-          };
+            navigate('/init_movie');
+            axios.post('http://localhost:5000/api/genres',{selectedGenres})
+            .then(result=>{
+              console.log(result)
+              if(result.data.status === 200){
+                navigate('/init_movie');
+              }
+                else {
+                  // Show error message if email or password is incorrect
+                  
+                  alert(result.data.message);
+                }
+                })
+                .catch(err=> console.log(err))
+                
+            };
       
   return (
     <div className='main'>
