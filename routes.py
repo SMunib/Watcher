@@ -113,6 +113,7 @@ def displaymovies():
 
 @auth_bp.route('/search',methods = ['POST'])
 def searchmovie():
+    #searching movie by name
     title = request.json.get('title')
     try:
         movies = Movies.query.filter(Movies.Title.like(f"%{title}%")).limit(5).all()
