@@ -82,6 +82,16 @@ export default function Home() {
           </Navbar.Collapse>
         </Container>
       </Navbar>
+      <div className='movie'>
+      <video controls>
+         <source src="../assets/trailer/Endgame.mp4" type="video/mp4" />
+            Your browser does not support the video tag.
+      </video>
+
+      </div>
+
+
+
     </div>
   );
 }

@@ -250,12 +250,8 @@ body {
   margin-top: -10px !important;
 }
 
-/* home */
-.mainn{
-  height: 100vh;
-  background-color: #000;
-}
 
+/* home navbar */
 .sticky {
   background-color: #1b1a2ea9 !important;
   transition: all 0.3s ease-out 0s !important;
@@ -449,4 +445,23 @@ body {
     cursor: pointer;
     margin-top: 0px;
   }
+}
+/* home */
+.mainn{
+  height: 100vh;
+  background-color: #000;
+}
+.movie{
+  /* margin-top: 30px;*/
+  padding-top: 35px; 
+  height: 80vh;
+  width: 100%;
+
+  /* background-color: #0384fc; */
+}
+.video {
+
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover; /* Ensures the video fills the entire container without stretching */
 }
