@@ -16,6 +16,19 @@ export default function init_movie() {
     //             console.error('Error fetching movies:', error);
     //         });
     // }, []); 
+        // useEffect(() => {
+    //     // POST request to send selected genres when the component mounts
+    //     axios.post('http://localhost:5000/api/genres', { selectedGenres })
+    //         .then(result => {
+    //             console.log(result);
+    //             if (result.data.status === 200) {
+    //                 navigate('/init_movie');
+    //             } else {
+    //                 alert(result.data.message);
+    //             }
+    //         })
+    //         .catch(err => console.log(err));
+    // }, [selectedGenres]); 
     const [selectedMovies, setSelectedMovies] = useState([]);
     const navigate = useNavigate();
     const moviess = [
