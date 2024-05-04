@@ -1,5 +1,6 @@
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash,check_password_hash
+from datetime import datetime,timezone
 
 db = SQLAlchemy()
 
@@ -9,6 +10,10 @@ class Users(db.Model):
     email = db.Column(db.String(200), unique = True, nullable = True)
     password = db.Column(db.String(200), nullable = False)
     isFirstTime = db.Column(db.Boolean, default = True)
+    myList = db.Column(db.Text, default = "")
+    favGenres = db.Column(db.Text, default = "")
+    watchedMovies = db.Column(db.Text, default = "")
+    searchHistory = db.Column(db.Text, default = "")
     
     def __repr__(self):
         return f"User('{self.username},'{self.email}')"
@@ -42,4 +47,11 @@ class Movies(db.Model):
     PosterLink = db.Column(db.Text)
     AvgVote = db.Column(db.REAL)
     VoteCount = db.Column(db.Integer)
+    
+class UserRating(db.Model):
+    userId = db.Column(db.Integer, primary_key = True)
+    movieId = db.Column(db.Integer, nullable = False)
+    whenWatched = db.Column(db.DateTime, default = datetime.now(timezone.utc))
+    timesWatched = db.Column(db.Integer, default = 0)
+    rating = db.Column(db.Integer, default = 0)
     
