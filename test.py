@@ -1,50 +1,33 @@
-import csv
-import json
+import sqlite3
+import os
 
-def extractDir(crew):
-  # Assuming 'crew_data' contains the string data you provided
-  #crew_data = "[{'id': 16, 'name': 'Animation'}, {'id': 35, 'name': 'Comedy'}, {'id': 10751, 'name': 'Family'}]"
+currentDir = os.getcwd()
+dbFile = 'WatcherDB.db'
+dbFolder = 'instance'
 
-  # Remove square brackets and curly braces from the string
-  crew_data = crew.replace("[", "").replace("]", "").replace("{", "").replace("}", "")
+dbPath = os.path.join(currentDir, dbFolder)
+dbPath = os.path.join(dbPath, dbFile)
+dbConnection = sqlite3.connect(dbPath)
+dbCursor = dbConnection.cursor()
 
-  # Split the string into a list of key-value pairs
-  key_value_pairs = [pair.strip() for pair in crew_data.split(",")]
-  #print(key_value_pairs)
-  # Extract the 'name' values from each pair and remove single quotes
-  crew_names = []
-  director = False
+###
+row_count = 0
+limit = 10
+genre = ['Adventure', 'Action']
+###
 
-  for pair in key_value_pairs:
-    if "name" in pair:
-        crew_names.append(pair.split(":")[1].strip().replace("'", ""))
+try:
+    dbCursor.execute("SELECT MovieID, Title, AvgVote, VoteCount, Genres FROM movies WHERE VoteCount > 50 AND ProductionCountries = 'United States of America' ORDER BY AvgVote DESC;")
+    results = dbCursor.fetchall()
+    # dbConnection.commit()
 
-  # Join the crew names with commas
-  crew_names_string = ', '.join(crew_names)
+    for row in results:
+        if set(genre) <= set(row[4]):
+            print(row)
+            row_count += 1
 
-  # Print the crew names without any extra characters
-  print(crew_names_string)
-  #cast_data = json.loads(cast_data)
-  #names = [actor['name'] for actor in cast_data] 
-  #print(names) 
-
-
-def display_csv_column(file_path, column_index, limit):
-    with open(file_path, 'r', encoding='utf-8') as file:
-        csv_reader = csv.reader(file)
-        row_count = 0
-        for row in csv_reader:
-            if len(row) > column_index:
-                extractDir(row[column_index])
-                #print(row[column_index])
-                row_count += 1
-                if row_count >= limit:
-                    break
-
-
-
-file_path = 'movies_metadata.csv'
-column_index = 13
-limit = 10  
-
-display_csv_column(file_path, column_index, limit)
+        # if row_count >= limit:
+        #     break
+        
+except sqlite3.Error as error:
+    print("SQLite error: ", error)
