@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState,useRef } from 'react';
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
 import Container from 'react-bootstrap/Container';
 import { Link, useNavigate } from 'react-router-dom';
 import { AiOutlineHome, AiOutlineUser } from 'react-icons/ai';
 import logo from '../assets/netflix1.png';
+import videoSource from '../assets/trailer/Endgame.mp4';
 
 
 export default function Home() {
@@ -31,6 +32,50 @@ export default function Home() {
     // Perform search logic here
     console.log('Searching for:', searchQuery);
   };
+  
+  const movies = [
+    {
+      name: "The Shawshank Redemption",
+      picturePath: "../assets/Endgame.jpg"
+    },
+    {
+      name: "The Godfather",
+      picturePath: "../assets/Endgame.jpg"
+    },
+    {
+      name: "The Dark Knight",
+      picturePath: "../assets/Endgame.jpg"
+    },
+    {
+      name: "Schindler's List",
+      picturePath: "../assets/Endgame.jpg"
+    },
+    {
+      name: "Pulp Fiction",
+      picturePath: "../assets/Endgame.jpg"
+    },
+    {
+      name: "Forrest Gump",
+      picturePath: "../assets/Endgame.jpg"
+    },
+    {
+      name: "Inception",
+      picturePath: "../assets/mov.jpg"
+    },
+    {
+      name: "The Matrix",
+      picturePath: "../assets/Endgame.jpg"
+    },
+    {
+      name: "Interstellar",
+      picturePath: "../assets/Endgame.jpg"
+    },
+    {
+      name: "Fight Club",
+      picturePath: "../assets/Endgame.jpg"
+    }
+  ];
+  
 
   return (
     <div className="mainn">
@@ -81,16 +126,25 @@ export default function Home() {
             </Nav>
           </Navbar.Collapse>
         </Container>
-      </Navbar>
-      <div className='movie'>
-      <video controls>
-         <source src="../assets/trailer/Endgame.mp4" type="video/mp4" />
-            Your browser does not support the video tag.
-      </video>
-
+      </Navbar> 
+      <div className="movie">
+        <video controls autoPlay loop>
+          <source src={videoSource} type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+      </div>
+      <div className="movie-container">
+        <div className="movie-list">
+          {movies.map((movie, index) => (
+            <div key={index} className="movie-item">
+              <img src={movie.picturePath} alt={movie.name} />
+            </div>
+          ))}
+        </div>
       </div>
 
-
+      
+ 
 
     </div>
   );

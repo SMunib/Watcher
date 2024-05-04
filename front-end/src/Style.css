@@ -453,15 +453,40 @@ body {
 }
 .movie{
   /* margin-top: 30px;*/
-  padding-top: 35px; 
+  padding-top: 75px; 
   height: 80vh;
   width: 100%;
-
+  overflow: hidden;
   /* background-color: #0384fc; */
 }
-.video {
+video {
 
-  width: 100% !important;
-  height: 100% !important;
+  width: 100%;
+  height: 100%;
   object-fit: cover; /* Ensures the video fills the entire container without stretching */
+}
+.mute{
+  color: #afbec4;
+}
+
+/* 
+sliders */
+.movie-container {
+  height: 200px;
+  overflow-x: auto;
+}
+
+.movie-list {
+  display: flex;
+  flex-wrap: nowrap;
+}
+
+.movie-item {
+  flex: 0 0 auto;
+  margin-right: 10px;
+}
+
+.movie-item img {
+  width: 100px;
+  height: auto;
 }
