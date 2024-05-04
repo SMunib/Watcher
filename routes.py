@@ -53,7 +53,7 @@ def login():
     
 @auth_bp.route('/select',methods = ['GET','Post'])
 def displaygenres():
-    if request.method == 'Get':
+    if request.method == 'GET':
         try:
             genres = db.session.query(Movies.Genres).all()
             unique_genres = set()

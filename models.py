@@ -21,6 +21,7 @@ class Users(db.Model):
     
     def checkFirstTime(self):
         self.isFirstTime = False
+        
 class Movies(db.Model):
     MovieID = db.Column(db.Integer, primary_key=True)
     Title = db.Column(db.Text, nullable=False)
