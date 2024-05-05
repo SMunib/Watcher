@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
 import Container from 'react-bootstrap/Container';
@@ -9,11 +9,25 @@ import videoSource from '../assets/trailer/Endgame.mp4';
 import Swiper from 'swiper';
 import 'swiper/swiper-bundle.css';
 
-
 export default function Home() {
   const [navColour, updateNavbar] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const videoRef = useRef(null);
 
+  useEffect(() => {
+    const video = videoRef.current;
+    const playPromise = video.play();
+
+    if (playPromise !== undefined) {
+      playPromise.then(_ => {
+        // Autoplay started
+      }).catch(error => {
+        // Autoplay failed, possibly due to browser restrictions
+        console.error('Autoplay failed:', error);
+      });
+    }
+  }, []);
+  
   useEffect(() => {
     const swiper = new Swiper('.swiper-container', {
       direction: 'horizontal', 
@@ -77,6 +91,15 @@ export default function Home() {
   const handleSearch = () => {
     // Perform search logic here
     console.log('Searching for:', searchQuery);
+  };
+  const [muted, setMuted] = useState(false);
+
+  const toggleMute = () => {
+    const video = videoRef.current;
+    if (video) {
+      video.muted = !video.muted;
+      setMuted(!video.muted);
+    }
   };
 
   const imageList = [
@@ -144,14 +167,18 @@ export default function Home() {
         </Container>
       </Navbar> 
       <div className="movie">
-        <video controls autoPlay loop>
+      
+        <video ref={videoRef} autoPlay loop muted>
           <source src={videoSource} type="video/mp4" />
           Your browser does not support the video tag.
+          
         </video>
+        {/* <button  className='muteBtn' onClick={toggleMute}>{muted ? 'Unmute' : 'Mute'}</button> */}
+        <button  className='muteBtn' onClick={toggleMute}>{muted ? <h3><i class="bi bi-volume-up"></i></h3> : <h3> <i class="bi bi-volume-mute"></i></h3>}</button>
+        
         
       </div>
-      
-      <div className="container1-fluid"  style={{ paddingTop: '10px' }}>
+      <div className="container1-fluid"  style={{ paddingTop: '30px' }}>
         <p color='white'>Popular on Netflix</p>
         <div className="swiper-container">
           <div className="swiper-wrapper">
@@ -161,8 +188,8 @@ export default function Home() {
               </div>
             ))}
           </div>
-          <div className="swiper-button-next"></div>
-          <div className="swiper-button-prev"></div>
+          {/* <div className="swiper-button-next"></div>
+          <div className="swiper-button-prev"></div> */}
         </div>
       </div>
       <div className="container1-fluid " style={{ paddingTop: '50px' }}>
@@ -175,8 +202,8 @@ export default function Home() {
               </div>
             ))}
           </div>
-          <div className="swiper-button-next"></div>
-          <div className="swiper-button-prev"></div>
+          {/* <div className="swiper-button-next"></div>
+          <div className="swiper-button-prev"></div> */}
         </div>
       </div>
     </div>
