@@ -9,24 +9,25 @@ import videoSource from '../assets/trailer/Endgame.mp4';
 import Swiper from 'swiper';
 import 'swiper/swiper-bundle.css';
 
+
 export default function Home() {
   const [navColour, updateNavbar] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const videoRef = useRef(null);
 
-  useEffect(() => {
-    const video = videoRef.current;
-    const playPromise = video.play();
+  // useEffect(() => {
+  //   const video = videoRef.current;
+  //   const playPromise = video.play();
 
-    if (playPromise !== undefined) {
-      playPromise.then(_ => {
-        // Autoplay started
-      }).catch(error => {
-        // Autoplay failed, possibly due to browser restrictions
-        console.error('Autoplay failed:', error);
-      });
-    }
-  }, []);
+  //   if (playPromise !== undefined) {
+  //     playPromise.then(_ => {
+  //       // Autoplay started
+  //     }).catch(error => {
+  //       // Autoplay failed, possibly due to browser restrictions
+  //       console.error('Autoplay failed:', error);
+  //     });
+  //   }
+  // }, []);
   
   useEffect(() => {
     const swiper = new Swiper('.swiper-container', {
@@ -184,7 +185,9 @@ export default function Home() {
           <div className="swiper-wrapper">
             {imageList.map((image, index) => (
               <div key={index} className="swiper-slide">
+                 <Link to={`/minipage/${image.name}`}>
                 <img src={image.src} alt={image.name} />
+                </Link>
               </div>
             ))}
           </div>
