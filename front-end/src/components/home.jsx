@@ -8,13 +8,14 @@ import logo from '../assets/netflix1.png';
 import videoSource from '../assets/trailer/Endgame.mp4';
 import Swiper from 'swiper';
 import 'swiper/swiper-bundle.css';
+import MiniPage from './minipage';
 
 
 export default function Home() {
   const [navColour, updateNavbar] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const videoRef = useRef(null);
-
+  const [selectedImage, setSelectedImage] = useState(null);
   // useEffect(() => {
   //   const video = videoRef.current;
   //   const playPromise = video.play();
@@ -102,7 +103,17 @@ export default function Home() {
       setMuted(!video.muted);
     }
   };
+  
 
+  const [seen, setSeen] = useState(false)
+
+  function togglePop (imageName) {
+      setSelectedImage(imageName)
+      setSeen(!seen);
+  };
+  const handleClose = () => {
+    setSeen(false);
+  };
   const imageList = [
     { name: 'Image 1', src: 'https://image.tmdb.org/t/p/w500/ba7hnMx1HAze0QSJSNfsTBycS8U.jpg' },
     { name: 'Image 2', src: 'https://image.tmdb.org/t/p/w500/c3XBgBLzB9Sh7k7ewXY2QpfH47L.jpg' },
@@ -166,49 +177,57 @@ export default function Home() {
             </Nav>
           </Navbar.Collapse>
         </Container>
-      </Navbar> 
-      <div className="movie">
-      
-        <video ref={videoRef} autoPlay loop muted>
-          <source src={videoSource} type="video/mp4" />
-          Your browser does not support the video tag.
+      </Navbar>
+      <div>
+        <div className="movie">
+        
+          <video ref={videoRef} autoPlay loop muted>
+            <source src={videoSource} type="video/mp4" />
+            Your browser does not support the video tag.
+            
+          </video>
+          {/* <button  className='muteBtn' onClick={toggleMute}>{muted ? 'Unmute' : 'Mute'}</button> */}
+          <button  className='muteBtn' onClick={toggleMute}>{muted ? <h3><i className="bi bi-volume-up"></i></h3> : <h3> <i className="bi bi-volume-mute"></i></h3>}</button>
           
-        </video>
-        {/* <button  className='muteBtn' onClick={toggleMute}>{muted ? 'Unmute' : 'Mute'}</button> */}
-        <button  className='muteBtn' onClick={toggleMute}>{muted ? <h3><i class="bi bi-volume-up"></i></h3> : <h3> <i class="bi bi-volume-mute"></i></h3>}</button>
-        
-        
-      </div>
-      <div className="container1-fluid"  style={{ paddingTop: '30px' }}>
-        <p color='white'>Popular on Netflix</p>
-        <div className="swiper-container">
-          <div className="swiper-wrapper">
-            {imageList.map((image, index) => (
-              <div key={index} className="swiper-slide">
-                 <Link to={`/minipage/${image.name}`}>
-                <img src={image.src} alt={image.name} />
-                </Link>
-              </div>
-            ))}
-          </div>
-          {/* <div className="swiper-button-next"></div>
-          <div className="swiper-button-prev"></div> */}
+          
         </div>
-      </div>
-      <div className="container1-fluid " style={{ paddingTop: '50px' }}>
-        <p color='white'>Popular on Netflix</p>
-        <div className="swiper-container">
-          <div className="swiper-wrapper">
-            {imageList.map((image, index) => (
-              <div key={index} className="swiper-slide">
-                <img src={image.src} alt={image.name} />
-              </div>
-            ))}
+        <div className="container1-fluid"  style={{ paddingTop: '30px' }}>
+          <p color='white'>Popular on Netflix</p>
+          <div className="swiper-container">
+            <div className="swiper-wrapper">
+              {imageList.map((image, index) => (
+                <div key={index} className="swiper-slide">
+                  
+                <button style={{ backgroundColor: 'transparent',  border: 'none', padding: 0, margin: 0,}} onClick={() => togglePop(image.name)}>
+                    <img src={image.src} alt={image.name} />
+                  </button>
+                </div>
+              ))}
+            </div>
+            {/* <div className="swiper-button-next"></div>
+            <div className="swiper-button-prev"></div> */}
           </div>
-          {/* <div className="swiper-button-next"></div>
-          <div className="swiper-button-prev"></div> */}
         </div>
-      </div>
-    </div>
+        <div className="container1-fluid " style={{ paddingTop: '50px' }}>
+          <p color='white'>Popular on Netflix</p>
+          <div className="swiper-container">
+            <div className="swiper-wrapper">
+              {imageList.map((image, index) => (
+                <div key={index} className="swiper-slide">
+                  
+                <button style={{ backgroundColor: 'transparent',  border: 'none', padding: 0, margin: 0,}} onClick={() => togglePop(image.name)}>
+                    <img src={image.src} alt={image.name} />
+                  </button>
+              
+                </div>
+              ))}
+            </div>
+            {/* <div className="swiper-button-next"></div>
+            <div className="swiper-button-prev"></div> */}
+          </div>
+        </div>
+        {seen && <MiniPage movieName={selectedImage} onClose={handleClose} />}
+      </div> 
+    </div> 
   );
 }
