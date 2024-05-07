@@ -454,8 +454,8 @@ body {
 .movie{
   /* margin-top: 30px;*/
   position: relative;
-  padding-top: 75px; 
-  height: 80vh;
+  padding-top: 0px; 
+  height: 85vh;
   width: 100%;
   overflow: hidden;
   /* background-color: #0384fc; */
@@ -596,7 +596,7 @@ p {
   background-repeat: no-repeat;
 }
 .popup {
- 
+  margin-top: 60px;
   position: fixed;
   z-index: 1;
   left: 0;

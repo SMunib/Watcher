@@ -187,11 +187,11 @@ export default function Home() {
             
           </video>
           {/* <button  className='muteBtn' onClick={toggleMute}>{muted ? 'Unmute' : 'Mute'}</button> */}
-          <button  className='muteBtn' onClick={toggleMute}>{muted ? <h3><i className="bi bi-volume-up"></i></h3> : <h3> <i className="bi bi-volume-mute"></i></h3>}</button>
+          <button  className='muteBtn'style={{border: "none"}} onClick={toggleMute}>{muted ? <h3><i className="bi bi-volume-up"></i></h3> : <h3> <i className="bi bi-volume-mute"></i></h3>}</button>
           
           
         </div>
-        <div className="container1-fluid"  style={{ paddingTop: '30px' }}>
+        <div className="container1-fluid"  style={{ paddingTop: '20px' }}>
           <p color='white'>Popular on Netflix</p>
           <div className="swiper-container">
             <div className="swiper-wrapper">
