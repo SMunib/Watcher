@@ -47,8 +47,7 @@ const isPasswordValid = pass.includes(password);
                 {/* <p className="query text-center" style={{ color: 'red', fontWeight: 'bold' }}>This is a user authentication website designed for the purpose of
                 implementing socket programming to authenticate user with the highest security possible
                 </p> */}
-                
-           </div>
+          </div>
            <div>
            <p className="qu text-center">
                 For any queries contact us at maam@gmail.com
