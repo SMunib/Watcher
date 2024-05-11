@@ -2,20 +2,26 @@ import React, { useState, useEffect, useRef } from 'react';
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
 import Container from 'react-bootstrap/Container';
-import { Link } from 'react-router-dom';
+import { Link ,useNavigate, useLocation } from 'react-router-dom';
 import { AiOutlineUser } from 'react-icons/ai';
 import logo from '../assets/netflix1.png';
 import videoSource from '../assets/trailer/Endgame.mp4';
 import Swiper from 'swiper';
 import 'swiper/swiper-bundle.css';
 import MiniPage from './minipage';
+import SearchPage from './Search';
 
 
 export default function Home() {
   const [navColour, updateNavbar] = useState(false);
+  const [expand, updateExpanded] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const videoRef = useRef(null);
   const [selectedImage, setSelectedImage] = useState(null);
+   const navigate = useNavigate();
+   const location = useLocation();
+
+   const [selectedImage1, setSelectedImage1] = useState(null);
   // useEffect(() => {
   //   const video = videoRef.current;
   //   const playPromise = video.play();
@@ -87,11 +93,15 @@ export default function Home() {
   window.addEventListener('scroll', scrollHandler);
 
   const handleSearchInputChange = (e) => {
+    
     setSearchQuery(e.target.value);
   };
 
   const handleSearch = () => {
     // Perform search logic here
+    const encodedQuery = encodeURIComponent(searchQuery);
+    navigate(`/search?query=${encodedQuery}`);
+
     console.log('Searching for:', searchQuery);
   };
   const [muted, setMuted] = useState(false);
@@ -103,7 +113,15 @@ export default function Home() {
       setMuted(!video.muted);
     }
   };
-  
+  const [seen1, setSeen1] = useState(false)
+
+  function togglePop1 () {
+      // setSelectedImage1(imageName)
+      setSeen1(!seen1);
+  };
+  const handleClose1 = () => {
+    setSeen1(false);
+  };
 
   const [seen, setSeen] = useState(false)
 
@@ -160,9 +178,11 @@ export default function Home() {
                   value={searchQuery}
                   onChange={handleSearchInputChange}
                 />
-                <button className="search-button" onClick={handleSearch}>
-                  Search
-                </button>
+                {/* <Nav.Link as={Link} to="/search?query=${encodeURIComponent(searchQuery)}" onClick={() => updateExpanded(false)}> */}
+                  <button className="search-button"  onClick={() => togglePop1()}  >
+                    Search
+                  </button>
+                {/* </Nav.Link> */}
               </Nav.Item>
               
               <Nav.Item>
@@ -177,7 +197,9 @@ export default function Home() {
             </Nav>
           </Navbar.Collapse>
         </Container>
+       
       </Navbar>
+      
       <div>
         <div className="movie">
         
@@ -227,6 +249,7 @@ export default function Home() {
           </div>
         </div>
         {seen && <MiniPage movieName={selectedImage} onClose={handleClose} />}
+        {seen1 && <SearchPage query={searchQuery} onClose={handleClose1}/>}
       </div> 
     </div> 
   );
