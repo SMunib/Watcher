@@ -596,6 +596,7 @@ p {
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+  position: relative;
 }
 .popup {
   margin-top: 60px;
@@ -642,7 +643,7 @@ p {
   margin-bottom: 10px;
   }
   
-  .popup-inner button[type="submit"],
+  /* .popup-inner button[type="submit"],
   .popup-inner button[type="button"] {
   background-color: #4CAF50;
   color: white;
@@ -655,8 +656,8 @@ p {
   margin-right: 10px;
   cursor: pointer;
   border-radius: 5px;
-  }
-  
+  } */
+/*   
   .popup-inner button[type="submit"]:hover,
   .popup-inner button[type="button"]:hover {
   background-color: #45a049;
@@ -685,13 +686,14 @@ p {
   background-color: #bfbfbf;
   color: #ffffff;
   cursor: not-allowed;
-  }
+  } */
   button.btn-close.btn-close-white{
     margin-top: 0;
     position: absolute;
-    right: 0;
+    right: 7px;
     background-color: transparent !important;
     opacity: 1;
+    top: 7px;
 
   }
   .contentDiv{
@@ -708,4 +710,35 @@ p {
   }
   .right_content{
     width: 30%;
+  }
+  .addbutton{
+      background-color: transparent;
+      border: none;
+      font-size: 2rem;
+      padding: 0; /* Remove any default padding */
+    /* width: 2rem; Set the width to match the size of the icon */
+    /* height: 2rem;  */
+      /* position: absolute; */
+      bottom: 10px !important; /* Adjust this value as needed */
+      /* left: 50%;
+      transform: translateX(-50%); */
+  }
+
+  .rateWrapper{
+    display: flex;
+    position: absolute;
+    top: 430px;
+    left: 30px;
+    justify-content: space-between;
+    align-items: center;
+    width: 125px;
+  }
+  .addbutton:hover i{
+    color: #fff;
+  }
+  .addbutton i {
+    color: #6c757d;
+    /* position: absolute;
+    top: 430px;
+    left: 24px; */
   }
