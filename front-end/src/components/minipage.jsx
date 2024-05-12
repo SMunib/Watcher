@@ -90,7 +90,7 @@ export default function MiniPage({ movieName, onClose }) {
         <div className="popup-inner">
           <div className='main-1'>
             <div className='moviepic' style={{backgroundImage: `linear-gradient(to bottom, transparent 70%, rgba(0, 0, 0, 0.7)), url(${movie.picturePath})`}}>
-              <button onClick={onClose} type='button' className="btn-close btn-close-white" aria-label="Close"></button>
+              <button onClick={onClose} type='button' className="btn-close btn-close-white" aria-label="Close" style={{top:"10px"}} ></button>
              <div className="rateWrapper">
                 {movie.add === "no" && (
                   <button className='addbutton' onClick={handleAddButtonClick}>

@@ -1,12 +1,24 @@
-import React,{useEffect} from 'react';
-import { useLocation } from 'react-router-dom';
+import React,{useEffect,useState} from 'react';
 import Swiper from 'swiper';
 import 'swiper/swiper-bundle.css';
+import MiniPage from './minipage';
+
 const SearchPage = ({query,onClose}) => {
-// export default function SearchPage() {
-//   const location = useLocation();
-//   const queryParams = new URLSearchParams(location.search);
-//   const query = queryParams.get('query');
+  const [selectedImage, setSelectedImage] = useState(null);
+
+
+useEffect(()=>{
+  axios.post('http://localhost:5000/api/search', {query})
+        .then(result => {
+          console.log(result);
+          if (result.data.status === 200) {
+            console.log(result.data.message);
+          } else {
+            alert(result.data.message);
+          }
+        })
+
+},[]);  
 useEffect(() => {
   const handleKeyDown = (event) => {
     if (event.key === 'Escape') {
@@ -20,6 +32,8 @@ useEffect(() => {
     document.removeEventListener('keydown', handleKeyDown);
   };
 }, [onClose]);
+
+
 useEffect(() => {
   const swiper = new Swiper('.swiper-container', {
     direction: 'horizontal', 
@@ -65,6 +79,18 @@ useEffect(() => {
     },
   });
 }, []);
+
+
+const [seen, setSeen] = useState(false)
+
+function togglePop (imageName) {
+    setSelectedImage(imageName)
+    setSeen(!seen);
+};
+const handleClose = () => {
+  setSeen(false);
+};
+
 const imageList = [
   { name: 'Image 1', src: 'https://image.tmdb.org/t/p/w500/ba7hnMx1HAze0QSJSNfsTBycS8U.jpg' },
   { name: 'Image 2', src: 'https://image.tmdb.org/t/p/w500/c3XBgBLzB9Sh7k7ewXY2QpfH47L.jpg' },
@@ -85,9 +111,9 @@ const imageList = [
     <div className="popup">
         <div className="popup-inner" style={{width:"100%"}}>
           <div className='main-1'>
-          <button onClick={onClose} type='button' className="btn-close btn-close-white" aria-label="Close"></button>
+          
           <div className="container1-fluid " style={{ paddingTop: '50px' }}>
-          <p color='white'>Popular on Netflix</p>
+          <p color='white'>Search Result</p>
           <div className="swiper-container">
             <div className="swiper-wrapper">
               {imageList.map((image, index) => (
@@ -103,6 +129,7 @@ const imageList = [
             {/* <div className="swiper-button-next"></div>
             <div className="swiper-button-prev"></div> */}
           </div>
+          <button onClick={onClose} type='button' className="btn-close btn-close-white" aria-label="Close" style={{paddingRight: "50px"}}></button>
         </div>
             
            
@@ -118,6 +145,7 @@ const imageList = [
           </div>
         </div>
             {console.log(query)}
+            {seen && <MiniPage movieName={selectedImage} onClose={handleClose} />}
       </div>
       
   );
