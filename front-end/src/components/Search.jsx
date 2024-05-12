@@ -18,7 +18,7 @@ useEffect(()=>{
           }
         })
 
-},[]);  
+},[]);
 useEffect(() => {
   const handleKeyDown = (event) => {
     if (event.key === 'Escape') {
