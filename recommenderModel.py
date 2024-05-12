@@ -42,6 +42,10 @@ def recommendMoives(userID):
     
     # Variables needed by model
     coldStart = None
+    minimumVotes = 50
+    minAVColdStart = 7.5
+    minNumMoviesColdStart = 10
+    recommendedMovies = []
     #
 
 
@@ -53,11 +57,38 @@ def recommendMoives(userID):
 
     # Model Implementation
     if coldStart:
-        print('in coldstart')
+        dbCursor.execute("SELECT favGenres FROM users WHERE id = ?;", (userID, ))
+        favGenres = dbCursor.fetchall()
+        favGenres = convertTupleToList(favGenres)
+        print(favGenres)
+
+        if favGenres:
+            dbCursor.execute("SELECT MovieID, Genres, Title, AvgVote, VoteCount FROM movies WHERE VoteCount > ? ORDER BY AvgVote DESC", (minimumVotes, ))
+            results = dbCursor.fetchall()
+
+            for genre in favGenres:
+                count = 0
+
+                for row in results:
+                    favGenresMovies = row[1].split(", ")
+
+                    if set([genre]).issubset(set(favGenresMovies)) and (row[3] > minAVColdStart): 
+                        # print(row[0])
+                        if not set([row[0]]).issubset(set(recommendedMovies)):
+                            recommendedMovies.append(row[0])
+                            count += 1
+                    
+                    if count >= minNumMoviesColdStart:
+                        break
+            
+            return recommendedMovies
+        else:
+            return recommendedMovies
+    
     else:
         print('not')
 
 
 
 # Implementation
-recommendMoives(4)
+print(recommendMoives(2))
