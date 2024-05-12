@@ -1,33 +1,33 @@
-import sqlite3
-import os
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.cluster import KMeans
 
-currentDir = os.getcwd()
-dbFile = 'WatcherDB.db'
-dbFolder = 'instance'
+# Generate random coordinates (replace this with your coordinates)
+num_coordinates = 100
+coordinates = np.random.rand(num_coordinates, 2) * 10  # 2D coordinates in the range [0, 10)
 
-dbPath = os.path.join(currentDir, dbFolder)
-dbPath = os.path.join(dbPath, dbFile)
-dbConnection = sqlite3.connect(dbPath)
-dbCursor = dbConnection.cursor()
+# Plot the original coordinates
+plt.figure(figsize=(8, 6))
+plt.scatter(coordinates[:, 0], coordinates[:, 1], color='blue', label='Original')
 
-###
-row_count = 0
-limit = 10
-genre = ['Adventure', 'Action']
-###
+# Apply K-means clustering
+num_clusters = 3  # Specify the number of clusters
+kmeans = KMeans(n_clusters=num_clusters)
+kmeans.fit(coordinates)
+print(coordinates)
+cluster_centers = kmeans.cluster_centers_
 
-try:
-    dbCursor.execute("SELECT MovieID, Title, AvgVote, VoteCount, Genres FROM movies WHERE VoteCount > 50 AND ProductionCountries = 'United States of America' ORDER BY AvgVote DESC;")
-    results = dbCursor.fetchall()
-    # dbConnection.commit()
+# Plot the cluster centers
+plt.scatter(cluster_centers[:, 0], cluster_centers[:, 1], color='red', marker='x', s=100, label='Cluster Centers')
 
-    for row in results:
-        if set(genre) <= set(row[4]):
-            print(row)
-            row_count += 1
+# Plot the clustered points
+for i in range(num_clusters):
+    cluster_points = coordinates[kmeans.labels_ == i]
+    plt.scatter(cluster_points[:, 0], cluster_points[:, 1], label=f'Cluster {i+1}')
 
-        # if row_count >= limit:
-        #     break
-        
-except sqlite3.Error as error:
-    print("SQLite error: ", error)
+plt.title('K-means Clustering')
+plt.xlabel('X-coordinate')
+plt.ylabel('Y-coordinate')
+plt.legend()
+plt.grid(True)
+plt.show()

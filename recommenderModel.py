@@ -46,6 +46,7 @@ def recommendMoives(userID):
     minAVColdStart = 7.5
     minNumMoviesColdStart = 10
     recommendedMovies = []
+    userWatchedMovies = []
     #
 
 
@@ -86,9 +87,23 @@ def recommendMoives(userID):
             return recommendedMovies
     
     else:
-        print('not')
+        # Getting all movies user has watched
+        dbCursor.execute("SELECT watchedMovies FROM users WHERE id = ?", (userID, ))
+        userWatchedMovies = dbCursor.fetchall()
+        userWatchedMovies = convertTupleToList(userWatchedMovies)
+
+        # iterating for each movie Collaborative then Content based filtering and generating recommendations based on each movie
+        for movie in userWatchedMovies:
+            print(movie)
+
+            # Getting the rating user has given to it
+            dbCursor.execute("SELECT rating FROM user_rating WHERE userID = ? and movieID = ?", (userID, movie))
+            userMovieRating = dbCursor.fetchall()
+            # userMovieRating = userMovieRating[0][0]
+            print(userMovieRating)
+
 
 
 
 # Implementation
-print(recommendMoives(2))
+print(recommendMoives(4))
