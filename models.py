@@ -26,7 +26,16 @@ class Users(db.Model):
     
     def checkFirstTime(self):
         self.isFirstTime = False
-        
+    
+    def addFavouriteGenre(self,genre):
+        if genre not in self.favGenres.split(','):
+            print(genre)
+            self.favGenres = ','.join([genre,self.favGenres]) if self.favGenres else genre
+            print(self.favGenres)
+            db.session.commit()
+            return True
+        else:
+            return False        
 class Movies(db.Model):
     MovieID = db.Column(db.Integer, primary_key=True)
     Title = db.Column(db.Text, nullable=False)
