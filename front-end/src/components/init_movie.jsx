@@ -1,36 +1,25 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate, Link } from 'react-router-dom';
 import { Button } from 'react-bootstrap';
+import axios from 'axios';
 
 export default function init_movie() {
     // const location = useLocation();
     // const selectedGenres = location.state.selectedGenres;
-
-    // useEffect(() => {
-    //     // GET request to fetch movies when the component mounts
-    //     axios.get('http://localhost:5000/api/movies')
-    //         .then(response => {
-    //             setMovies(response.data);
-    //         })
-    //         .catch(error => {
-    //             console.error('Error fetching movies:', error);
-    //         });
-    // }, []); 
-        // useEffect(() => {
-    //     // POST request to send selected genres when the component mounts
-    //     axios.post('http://localhost:5000/api/genres', { selectedGenres })
-    //         .then(result => {
-    //             console.log(result);
-    //             if (result.data.status === 200) {
-    //                 navigate('/init_movie');
-    //             } else {
-    //                 alert(result.data.message);
-    //             }
-    //         })
-    //         .catch(err => console.log(err));
-    // }, [selectedGenres]); 
+    const [movies, setAllMovies ]=useState([]);
     const [selectedMovies, setSelectedMovies] = useState([]);
     const navigate = useNavigate();
+    useEffect(() => {
+        // GET request to fetch movies when the component mounts
+        axios.get('http://localhost:5000/api/movies')
+            .then(response => {
+                setAllMovies(response.data);
+            })
+            .catch(error => {
+                console.error('Error fetching movies:', error);
+            });
+    }, []); 
+    
     const moviess = [
         "The Shawshank Redemption",
         "The Godfather",
@@ -65,17 +54,18 @@ export default function init_movie() {
 
     const handleNextClick = () => {
         console.log('Selected movies for next:', selectedMovies);
-         //     axios.post('http://localhost:5000/api/genres', { selectedMovies })
-    //         .then(result => {
-    //             console.log(result);
-    //             if (result.data.status === 200) {
-    //                 navigate('/home');
-    //             } else {
-    //                 alert(result.data.message);
-    //             }
-    //         })
-    //         .catch(err => console.log(err));
-    // }, [selectedMovies]); 
+
+             axios.post('http://localhost:5000/api/selectedMovies', { selectedMovies })
+            .then(result => {
+                console.log(result);    
+                if (result.data.status === 200) {
+                    navigate('/home');
+                } else {
+                    alert(result.data.message);
+                }
+            })
+            .catch(err => console.log(err));
+
         navigate('/home');
         // Add logic to navigate to the next page or perform any other action
     };

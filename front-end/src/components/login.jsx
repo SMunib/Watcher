@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Container, Row, Col, Form, Button } from 'react-bootstrap';
 import { FiLogIn } from 'react-icons/fi';
@@ -8,6 +8,7 @@ import axios from 'axios';
 function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const[firstTime,setFirst]=useState('')
   const navigate = useNavigate();
 
 const ema=['1@gmail.com'];
@@ -16,22 +17,40 @@ const pass=['1'];
 const isEmailValid = ema.includes(email);
 const isPasswordValid = pass.includes(password);
 
+// useEffect(() => {
+//   axios.get('http://localhost:5000/api/First')
+//     .then(response => {
+//       setFirst(response.data);
+//     })
+//     .catch(error => {
+//       console.error('Error fetching genres:', error);
+//     });
+// }, []);
+
+
   const handleSignIn = (e) => {
     e.preventDefault(); // Prevent default form submission
     axios.post('http://localhost:5000/api/login',{email,password})
     .then(result=>{
       console.log(result)
       if(result.data.status === 200){
+        if(firstTime){
         navigate('/priority');
+        }
+        else{
+          navigate('/priority');
+          // navigate('/Home');
+        }
       }
       else {
         // Show error message if email or password is incorrect
-        alert(result.data.message);
+        // alert(result.data.message);
+        alert("Email or Password is incorrect")
       }
     })
     .catch(err=> console.log(err))
 
-     navigate('/priority');
+    //  navigate('/priority');
   };
 
   return (

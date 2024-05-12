@@ -40,9 +40,20 @@ export default function priority() {
           
           const handleNextClick = () => {
             console.log('Selected genres for next:', selectedGenres);
+
+            axios.post('http://localhost:5000/api/selectedGenres',{selectedGenres})
+            .then(result=>{console.log(result)
+            if( result.data.status === 200){
+              console.log(result.data.message)
+            }
+            else{
+              alert(result.data.message);
+            }
+          }
+          )
+            .catch(err=> console.log(err)) 
+
             navigate('/init_movie');
-          
-                
             };
           // const handleskip = () => {
           //   navigate('/home');

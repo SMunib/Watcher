@@ -10,7 +10,7 @@ import Swiper from 'swiper';
 import 'swiper/swiper-bundle.css';
 import MiniPage from './minipage';
 import SearchPage from './Search';
-
+import axios from 'axios';
 
 export default function Home() {
   const [navColour, updateNavbar] = useState(false);
@@ -20,22 +20,131 @@ export default function Home() {
   const [selectedImage, setSelectedImage] = useState(null);
    const navigate = useNavigate();
    const location = useLocation();
-
    const [selectedImage1, setSelectedImage1] = useState(null);
-  // useEffect(() => {
-  //   const video = videoRef.current;
-  //   const playPromise = video.play();
 
-  //   if (playPromise !== undefined) {
-  //     playPromise.then(_ => {
-  //       // Autoplay started
-  //     }).catch(error => {
-  //       // Autoplay failed, possibly due to browser restrictions
-  //       console.error('Autoplay failed:', error);
-  //     });
-  //   }
-  // }, []);
+   //------variables for genres-----
+   const [Genre1,setGenre1]=useState([]);
+   const [Genre2,setGenre2]=useState([]);
+   const [Genre3,setGenre3]=useState([]);
+   const [Genre4,setGenre4]=useState([]);
+   const [Genre5,setGenre5]=useState([]);
+   const [Genre6,setGenre6]=useState([]);
+   const [Genre7,setGenre7]=useState([]);
+   const [Genre8,setGenre8]=useState([]);
+   const [Genre9,setGenre9]=useState([]);
+   const [Genre10,setGenre10]=useState([]);
+
+   //------get requests for sliders-------
+   useEffect(() => {
+    axios.get('http://localhost:5000/api/genre1')
+      .then(response => {
+        setGenre1(response.data);
+      })
+      .catch(error => {
+        console.error('Error fetching genres:', error);
+      });
+
+
+      axios.get('http://localhost:5000/api/genre2')
+      .then(response => {
+        setGenre2(response.data);
+      })
+      .catch(error => {
+        console.error('Error fetching genres:', error);
+      });
+    
+      axios.get('http://localhost:5000/api/genre3')
+      .then(response => {
+        setGenre3(response.data);
+      })
+      .catch(error => {
+        console.error('Error fetching genres:', error);
+      });
+
+      axios.post('http://localhost:5000/api/genre4', {genre:"Crime"})
+        .then(result => {
+          console.log(result);
+          if (result.data.status === 200) {
+            console.log(result.data.message);
+          } else {
+            alert(result.data.message);
+          }
+        })
+
+        .catch(err => console.log(err));
+        axios.post('http://localhost:5000/api/genre5', {genre:"Action"})
+        .then(result => {
+          console.log(result);
+          if (result.data.status === 200) {
+            console.log(result.data.message);
+          } else {
+            alert(result.data.message);
+          }
+        })
+        .catch(err => console.log(err));
+
+        axios.post('http://localhost:5000/api/genre6', {genre:"Mystery"})
+        .then(result => {
+          console.log(result);
+          if (result.data.status === 200) {
+            console.log(result.data.message);
+          } else {
+            alert(result.data.message);
+          }
+        })
+        .catch(err => console.log(err));
+
+        axios.post('http://localhost:5000/api/genre7', {genre:"Animation"})
+        .then(result => {
+          console.log(result);
+          if (result.data.status === 200) {
+            console.log(result.data.message);
+          } else {
+            alert(result.data.message);
+          }
+        })
+        .catch(err => console.log(err));
+
+        axios.post('http://localhost:5000/api/genre8', {genre:"Horror"})
+        .then(result => {
+          console.log(result);
+          if (result.data.status === 200) {
+            console.log(result.data.message);
+          } else {
+            alert(result.data.message);
+          }
+        })
+        .catch(err => console.log(err));
+
+
+        axios.post('http://localhost:5000/api/genre9', {genre:"Romance"})
+        .then(result => {
+          console.log(result);
+          if (result.data.status === 200) {
+            console.log(result.data.message);
+          } else {
+            alert(result.data.message);
+          }
+        })
+        .catch(err => console.log(err));
+
+        axios.post('http://localhost:5000/api/genre10', {genre:"Fantasy"})
+        .then(result => {
+          console.log(result);
+          if (result.data.status === 200) {
+            console.log(result.data.message);
+          } else {
+            alert(result.data.message);
+          }
+        })
+        .catch(err => console.log(err));
+     
+
+  }, []);
+
   
+
+
   useEffect(() => {
     const swiper = new Swiper('.swiper-container', {
       direction: 'horizontal', 
@@ -147,6 +256,7 @@ export default function Home() {
     { name: 'Image 12', src: 'https://image.tmdb.org/t/p/w500/79DgItjsyH5tpA3mC2xv5gU2zlZ.jpg' }
   ];
 
+
   return (
     <div className="mainn">
       <Navbar
@@ -213,6 +323,7 @@ export default function Home() {
           
           
         </div>
+        {/* 1 */}
         <div className="container1-fluid"  style={{ paddingTop: '20px' }}>
           <p color='white'>Popular on Netflix</p>
           <div className="swiper-container">
@@ -230,6 +341,10 @@ export default function Home() {
             <div className="swiper-button-prev"></div> */}
           </div>
         </div>
+
+
+            {/* 2 */}
+
         <div className="container1-fluid " style={{ paddingTop: '50px' }}>
           <p color='white'>Popular on Netflix</p>
           <div className="swiper-container">
@@ -248,7 +363,186 @@ export default function Home() {
             <div className="swiper-button-prev"></div> */}
           </div>
         </div>
+
+        {/* 3------ */}
+
+        <div className="container1-fluid " style={{ paddingTop: '50px' }}>
+          <p color='white'>Popular on Netflix</p>
+          <div className="swiper-container">
+            <div className="swiper-wrapper">
+              {imageList.map((image, index) => (
+                <div key={index} className="swiper-slide">
+                  
+                <button style={{ backgroundColor: 'transparent',  border: 'none', padding: 0, margin: 0,}} onClick={() => togglePop(image.name)}>
+                    <img src={image.src} alt={image.name} />
+                  </button>
+              
+                </div>
+              ))}
+            </div>
+            {/* <div className="swiper-button-next"></div>
+            <div className="swiper-button-prev"></div> */}
+          </div>
+        </div>
+
+
+
+             {/* 4------ */}
+        <div className="container1-fluid " style={{ paddingTop: '50px' }}>
+          <p color='white'>Popular on Netflix</p>
+          <div className="swiper-container">
+            <div className="swiper-wrapper">
+              {imageList.map((image, index) => (
+                <div key={index} className="swiper-slide">
+                  
+                <button style={{ backgroundColor: 'transparent',  border: 'none', padding: 0, margin: 0,}} onClick={() => togglePop(image.name)}>
+                    <img src={image.src} alt={image.name} />
+                  </button>
+              
+                </div>
+              ))}
+            </div>
+            {/* <div className="swiper-button-next"></div>
+            <div className="swiper-button-prev"></div> */}
+          </div>
+        </div>
+
+
+             {/* 5------ */}
+
+        <div className="container1-fluid " style={{ paddingTop: '50px' }}>
+          <p color='white'>Popular on Netflix</p>
+          <div className="swiper-container">
+            <div className="swiper-wrapper">
+              {imageList.map((image, index) => (
+                <div key={index} className="swiper-slide">
+                  
+                <button style={{ backgroundColor: 'transparent',  border: 'none', padding: 0, margin: 0,}} onClick={() => togglePop(image.name)}>
+                    <img src={image.src} alt={image.name} />
+                  </button>
+              
+                </div>
+              ))}
+            </div>
+            {/* <div className="swiper-button-next"></div>
+            <div className="swiper-button-prev"></div> */}
+          </div>
+        </div>
+
+
+
+             {/* 6------ */}
+
+        <div className="container1-fluid " style={{ paddingTop: '50px' }}>
+          <p color='white'>Popular on Netflix</p>
+          <div className="swiper-container">
+            <div className="swiper-wrapper">
+              {imageList.map((image, index) => (
+                <div key={index} className="swiper-slide">
+                  
+                <button style={{ backgroundColor: 'transparent',  border: 'none', padding: 0, margin: 0,}} onClick={() => togglePop(image.name)}>
+                    <img src={image.src} alt={image.name} />
+                  </button>
+              
+                </div>
+              ))}
+            </div>
+            {/* <div className="swiper-button-next"></div>
+            <div className="swiper-button-prev"></div> */}
+          </div>
+        </div>
+
+             {/* 7------ */}
+
+        <div className="container1-fluid " style={{ paddingTop: '50px' }}>
+          <p color='white'>Popular on Netflix</p>
+          <div className="swiper-container">
+            <div className="swiper-wrapper">
+              {imageList.map((image, index) => (
+                <div key={index} className="swiper-slide">
+                  
+                <button style={{ backgroundColor: 'transparent',  border: 'none', padding: 0, margin: 0,}} onClick={() => togglePop(image.name)}>
+                    <img src={image.src} alt={image.name} />
+                  </button>
+              
+                </div>
+              ))}
+            </div>
+            {/* <div className="swiper-button-next"></div>
+            <div className="swiper-button-prev"></div> */}
+          </div>
+        </div>
+
+             {/* 8------ */}
+
+        <div className="container1-fluid " style={{ paddingTop: '50px' }}>
+          <p color='white'>Popular on Netflix</p>
+          <div className="swiper-container">
+            <div className="swiper-wrapper">
+              {imageList.map((image, index) => (
+                <div key={index} className="swiper-slide">
+                  
+                <button style={{ backgroundColor: 'transparent',  border: 'none', padding: 0, margin: 0,}} onClick={() => togglePop(image.name)}>
+                    <img src={image.src} alt={image.name} />
+                  </button>
+              
+                </div>
+              ))}
+            </div>
+            {/* <div className="swiper-button-next"></div>
+            <div className="swiper-button-prev"></div> */}
+          </div>
+        </div>
+
+             {/* 9------ */}
+
+
+        <div className="container1-fluid " style={{ paddingTop: '50px' }}>
+          <p color='white'>Popular on Netflix</p>
+          <div className="swiper-container">
+            <div className="swiper-wrapper">
+              {imageList.map((image, index) => (
+                <div key={index} className="swiper-slide">
+                  
+                <button style={{ backgroundColor: 'transparent',  border: 'none', padding: 0, margin: 0,}} onClick={() => togglePop(image.name)}>
+                    <img src={image.src} alt={image.name} />
+                  </button>
+              
+                </div>
+              ))}
+            </div>
+            {/* <div className="swiper-button-next"></div>
+            <div className="swiper-button-prev"></div> */}
+          </div>
+        </div>
+
+             {/* 10------ */}
+
+        <div className="container1-fluid " style={{ paddingTop: '50px' }}>
+          <p color='white'>Popular on Netflix</p>
+          <div className="swiper-container">
+            <div className="swiper-wrapper">
+              {imageList.map((image, index) => (
+                <div key={index} className="swiper-slide">
+                  
+                <button style={{ backgroundColor: 'transparent',  border: 'none', padding: 0, margin: 0,}} onClick={() => togglePop(image.name)}>
+                    <img src={image.src} alt={image.name} />
+                  </button>
+              
+                </div>
+              ))}
+            </div>
+            {/* <div className="swiper-button-next"></div>
+            <div className="swiper-button-prev"></div> */}
+          </div>
+        </div>
+
+
+
+
+
         {seen && <MiniPage movieName={selectedImage} onClose={handleClose} />}
+       { console.log(seen1)}
         {seen1 && <SearchPage query={searchQuery} onClose={handleClose1}/>}
       </div> 
     </div> 

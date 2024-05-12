@@ -1,9 +1,24 @@
 import React, { useEffect, useState } from 'react';
 import RatingPopup from './RatingPopup';
+import axios from 'axios';
 
 export default function MiniPage({ movieName, onClose }) {
   const [selectedMovie, setSelectedMovie] = useState(null);
   const [showRatingPopup, setShowRatingPopup] = useState(false); // Ensure initial value is false
+  
+  useEffect(()=>{
+    axios.post('http://localhost:5000/api/register',{movieName})
+    .then(result=>{console.log(result)
+    if( result.data.status === 200){
+      console.log(result.data.message)
+    }
+    else{
+      alert(result.data.message);
+    }
+  }
+  )
+    .catch(err=> console.log(err))  
+  },[])
 
   const movie = {
     name: "Inception",
@@ -31,6 +46,16 @@ export default function MiniPage({ movieName, onClose }) {
 
   const handleAddButtonClick = () => {
     setSelectedMovie(movie.name);
+    axios.post('http://localhost:5000/api/addToList', { selectedMovie })
+            .then(result => {
+                console.log(result);    
+                if (result.data.status === 200) {
+                  
+                } else {
+                    alert(result.data.message);
+                }
+            })
+            .catch(err => console.log(err));
   };
 
   const handleRateButtonClick = () => {
@@ -45,6 +70,17 @@ export default function MiniPage({ movieName, onClose }) {
   const handleRatingSubmit = (rating) => {
     // Handle rating submission here
     console.log("Rating submitted:", rating);
+
+    axios.post('http://localhost:5000/api/rating', { selectedMovie,rating })
+    .then(result => {
+        console.log(result);    
+        if (result.data.status === 200) {
+          
+        } else {
+            alert(result.data.message);
+        }
+    })
+    .catch(err => console.log(err));
     setShowRatingPopup(false);
   };
 
