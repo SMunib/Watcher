@@ -41,13 +41,23 @@ def recommendMoives(userID):
         return 'Database connection failed!'
     
     # Variables needed by model
+    coldStart = None
     #
 
 
     # Checking for cold start problem
     dbCursor.execute("SELECT isFirstTime FROM users WHERE id = ?;", (userID, ))
+    coldStart = dbCursor.fetchall()
+    coldStart = coldStart[0][0]
+
+
+    # Model Implementation
+    if coldStart:
+        print('in coldstart')
+    else:
+        print('not')
 
 
 
 # Implementation
-recommendMoives(1)
+recommendMoives(4)
