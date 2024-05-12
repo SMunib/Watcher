@@ -742,3 +742,77 @@ p {
     top: 430px;
     left: 24px; */
   }
+/* RatingPopup component styles */
+/* RatingPopup component styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+  z-index: 1000; /* Ensure it appears above other content */
+  backdrop-filter: blur(5px); /* Apply blur effect to the background */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.popup2 {
+  position: fixed;
+  top: 70%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(0, 0, 0, 0.9);
+  padding: 20px;
+  border-radius: 10px;
+  width: 40%;
+  z-index: 100%;
+}
+
+.popup-inner.rating-popup2 {
+  text-align: center;
+  height: 500px;
+}
+
+.popup2 button.btn-close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  color: #fff;
+  border: none;
+  background-color: transparent;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.popup2 button.btn-close:hover {
+  color: #ccc;
+}
+
+.popup-inner.rating-popup2 input[type="number"] {
+  width: 100%;
+  margin-top: 10px;
+  padding: 8px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.popup-inner.rating-popup2 button {
+  margin-top: 10px;
+  width: 100%;
+  padding: 8px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  background-color: #ba0719;
+  color: #fff;
+  cursor: pointer;
+}
+
+.popup-inner.rating-popup2 button:hover {
+  background-color: #ba0725;
+}
+
+
+  

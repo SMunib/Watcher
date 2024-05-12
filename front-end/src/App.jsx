@@ -7,6 +7,7 @@ import Init_movie from './components/init_movie';
 import Home from './components/home';
 import MiniPage from './components/minipage';
 import SearchPage from './components/Search';
+import RatingPopup from './components/RatingPopup';
 
 function App() {
 
@@ -23,6 +24,7 @@ function App() {
         <Route  path="/Home"  element={<Home />} />  
         <Route  path="/Login" element={<Login />}  />     
         <Route path="/minipage/:movieName" element={<MiniPage />} />
+        <Route path="/RatingPopup" element={<RatingPopup/>} />
         <Route path="/search" element={<SearchPage/>} />
       </Routes> 
     </Router>     

@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
+import RatingPopup from './RatingPopup';
 
 export default function MiniPage({ movieName, onClose }) {
   const [selectedMovie, setSelectedMovie] = useState(null);
+  const [showRatingPopup, setShowRatingPopup] = useState(false); // Ensure initial value is false
 
   const movie = {
     name: "Inception",
@@ -28,7 +30,22 @@ export default function MiniPage({ movieName, onClose }) {
   }, [onClose]);
 
   const handleAddButtonClick = () => {
-      setSelectedMovie(movie.name);
+    setSelectedMovie(movie.name);
+  };
+
+  const handleRateButtonClick = () => {
+    console.log("Rate button clicked"); // Debugging statement
+    setShowRatingPopup(true);
+  };
+
+  const handleCloseRatingPopup = () => {
+    setShowRatingPopup(false);
+  };
+
+  const handleRatingSubmit = (rating) => {
+    // Handle rating submission here
+    console.log("Rating submitted:", rating);
+    setShowRatingPopup(false);
   };
 
   return (
@@ -43,13 +60,12 @@ export default function MiniPage({ movieName, onClose }) {
                   <button className='addbutton' onClick={handleAddButtonClick}>
                     {selectedMovie === movie.name ? <i className="bi bi-check-circle-fill"></i> : <i className="bi bi-plus-circle"></i>}
                   </button>
-
                 )}
-                <button type="button" className="btn btn-outline-secondary" style={{paddingleft: "100px !important"}}>Rate</button>   
+                <button onClick={handleRateButtonClick} type="button" className="btn btn-outline-secondary" style={{paddingLeft: "100px !important"}}>Rate</button>   
               </div>           
             </div>
           </div>
-
+      
           <div className='contentDiv text-white pt-4'>
             <div className='left_content'>
               {movie.synopsis}
@@ -63,7 +79,9 @@ export default function MiniPage({ movieName, onClose }) {
             </div>
           </div>
         </div>
+        {showRatingPopup && <RatingPopup onClose={handleCloseRatingPopup} onSubmit={handleRatingSubmit} />}
       </div>
+      
     </>
   );
 }

@@ -9,7 +9,7 @@ const SearchPage = ({query}) => {
 
   return (
     <div>
-      <h1>Search Results for: {query}</h1>
+      {/* <h1>Search Results for: {query}</h1> */}
       
       {/* Add search results or any other content here */}
     </div>
