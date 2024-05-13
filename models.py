@@ -35,7 +35,15 @@ class Users(db.Model):
             db.session.commit()
             return True
         else:
-            return False        
+            return False  
+    
+    def addFavMovie(self,movie):
+        if movie not in self.watchedMovies.split(','):
+            self.watchedMovies = ','.join([movie,self.watchedMovies]) if self.watchedMovies else movie
+            db.session.commit()
+            return True
+        else:
+            return False      
 class Movies(db.Model):
     MovieID = db.Column(db.Integer, primary_key=True)
     Title = db.Column(db.Text, nullable=False)

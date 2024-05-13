@@ -6,9 +6,9 @@ auth_bp = Blueprint('auth', __name__)
 #register user
 @auth_bp.route('/register',methods = ['POST'])
 def register():
-    data = request.get_json()
-    new_user = Users(username = data.get('username'),email = data.get('email'))
-    new_user.set_password(data.get('password'))
+    info = request.get_json()
+    new_user = Users(username = info.get('username'),email = info.get('email'))
+    new_user.set_password(info.get('password'))
     
     try:
         db.session.add(new_user)
@@ -40,7 +40,8 @@ def login():
                 data = {
                     "message" : "Login Successful",
                     "status" : 200,
-                    "isFirstTime": user.isFirstTime
+                    "isFirstTime": user.isFirstTime,
+                    "userid":user.id
                 }
                 user.isFirstTime = False
                 db.session.commit()

@@ -28,8 +28,7 @@ def displaygenres():
                 for movie in movies:
                     movie_list.append({
                         'title':movie.Title,
-                        'genres':movie.Genres,
-                        'rating':movie.AvgVote
+                        'poster_path':movie.PosterLink
                     })
                 response[genre] = movie_list
             return jsonify(response)
@@ -62,6 +61,6 @@ def storeGenres():
         db.session.rollback()
         error = {
             "status":500,
-            "message":"Some error occured"
+            "message":str(e)
         }
         return jsonify(error)
