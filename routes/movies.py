@@ -1,5 +1,6 @@
 from flask import Blueprint, request,jsonify
 from models import Movies,Users,db
+from sqlalchemy.sql.expression import func
 
 movie_bp = Blueprint('movies',__name__)    
 
@@ -60,6 +61,64 @@ def watchedMovies():
         }
         return jsonify(error)
 
-@movie_bp.route('/moviesbycategory',methods = ['GET'])
+@movie_bp.route('/moviesbycategory',methods = ['POST'])
+# Displays movies according to the category sent
 def findmovies():
-    i = 0
+    genre = request.json.get('genre')
+    try:
+        movie_list = []
+        movies = Movies.query.filter(Movies.Genres.contains(genre)).order_by(func.random()).limit(16).all()
+        for movie in movies:
+            movie_list.append({
+                'id':movie.MovieID,
+                'poster_path':movie.PosterLink
+            })
+        data = {
+            "status":200,
+            "movies":movie_list
+        }
+        return jsonify(data)
+    except Exception as e:
+        return jsonify({"status":500,"message":str(e)})
+    
+@movie_bp.route('/movieinfo',methods = ['POST'])
+def sendInfo():
+    id = request.json.get('MovieId')
+    try:
+        movie = Movies.query.get(id)
+        info = {
+            'title':movie.Title,
+            'synopsis':movie.Synopsis,
+            'runtime': movie.RunTime,
+            'genres':movie.Genres,
+            'rating':movie.AvgVote,
+            'release':movie.ReleaseDate
+        }
+        return jsonify(info)
+    except Exception as e:
+        error = {
+            "status":500,
+            "message":str(e)
+        }
+        return jsonify(error)    
+
+@movie_bp.route('/addtolist',methods = ['POST'])
+#add to myList using movieId and userId as input
+def addToFav():
+    movieId = request.json.get('movieid')
+    userId = request.json.get('userid')
+    try:
+        user = Users.query.get(userId)
+        user.addtolist(movieId)
+        data ={
+            "status":200,
+            "message":"Added to List"
+        }
+        return jsonify(data)
+    except Exception as e:
+        error = {
+            "status":500,
+            "message":str(e)
+        }
+        return jsonify(error)
+    
