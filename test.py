@@ -33,42 +33,84 @@
 # plt.show()
 
 
-import os
-import sqlite3
+# import os
+# import sqlite3
 
-currentDir = os.getcwd()
-dbFile = 'WatcherDB.db'
-dbFolder = 'instance'
-dbPath = os.path.join(currentDir, dbFolder)
-dbPath = os.path.join(dbPath, dbFile)
+# currentDir = os.getcwd()
+# dbFile = 'WatcherDB.db'
+# dbFolder = 'instance'
+# dbPath = os.path.join(currentDir, dbFolder)
+# dbPath = os.path.join(dbPath, dbFile)
 
-# Establishing DB connection
-try:
-    dbConnection = sqlite3.connect(dbPath)
-    dbCursor = dbConnection.cursor()
-    print('Success!')
-except sqlite3.Error as error:
-    print('Database connection failed!')
+# # Establishing DB connection
+# try:
+#     dbConnection = sqlite3.connect(dbPath)
+#     dbCursor = dbConnection.cursor()
+#     print('Success!')
+# except sqlite3.Error as error:
+#     print('Database connection failed!')
 
 
-# Getting image paths
-dbCursor.execute("SELECT MovieID, PosterLink FROM movies;")
-results = dbCursor.fetchall()
+# # Getting image paths
+# dbCursor.execute("SELECT MovieID, PosterLink FROM movies;")
+# results = dbCursor.fetchall()
 
-pathHeader = 'https://image.tmdb.org/t/p/original'
-count = 0
+# pathHeader = 'https://image.tmdb.org/t/p/original'
+# count = 0
 
-for row in results:
-    if row[1] is not None:
-        if not (pathHeader in row[1]):
-            count += 1
-            fullPath = pathHeader + row[1]
+# for row in results:
+#     if row[1] is not None:
+#         if not (pathHeader in row[1]):
+#             count += 1
+#             fullPath = pathHeader + row[1]
 
-            try:
-                dbCursor.execute("UPDATE movies SET PosterLink = ? WHERE MovieID = ?", (fullPath, row[0]))
-                print(row[0])
-            except sqlite3.Error as error:
-                print(error)
+#             try:
+#                 dbCursor.execute("UPDATE movies SET PosterLink = ? WHERE MovieID = ?", (fullPath, row[0]))
+#                 print(row[0])
+#             except sqlite3.Error as error:
+#                 print(error)
 
-dbConnection.commit()
-print('Succes!')
+# dbConnection.commit()
+# print('Succes!')
+
+
+# import matplotlib.pyplot as plt
+
+# # Example coordinates and labels
+# coordinates = [(0, 0), (1, 2), (3, 4), (5, 6)]
+# labels = ['A', 'B', 'C', 'D']
+
+# # Extract x and y coordinates from the list of tuples
+# x_coordinates = [coord[0] for coord in coordinates]
+# y_coordinates = [coord[1] for coord in coordinates]
+
+# # Plot the graph
+# plt.figure(figsize=(8, 6))
+# plt.plot(x_coordinates, y_coordinates, marker='o', linestyle='-', color='b')
+# plt.title('Graph of Coordinates with Labels')
+# plt.xlabel('X-coordinate')
+# plt.ylabel('Y-coordinate')
+# plt.grid(True)
+
+# # Annotate each point with its corresponding label
+# for label, (x, y) in zip(labels, coordinates):
+#     plt.text(x, y, label, ha='right', va='bottom')
+
+# plt.show()
+
+from mlxtend.frequent_patterns import apriori 
+from mlxtend.preprocessing import TransactionEncoder 
+import pandas as pd 
+# Sample transaction dataset (list of lists) 
+dataset = [['bread', 'milk', 'eggs'], 
+ ['bread', 'butter'], 
+ ['milk', 'butter'], 
+ ['bread', 'milk', 'butter'], 
+ ['bread', 'milk']] 
+# One-hot encode the dataset 
+te = TransactionEncoder() 
+te_ary = te.fit(dataset).transform(dataset) 
+df = pd.DataFrame(te_ary, columns=te.columns_) 
+# Apply Apriori algorithm to find frequent itemsets 
+frequent_itemsets = apriori(df, min_support=0.4, use_colnames=True) 
+print(frequent_itemsets)
