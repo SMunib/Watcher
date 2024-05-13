@@ -74,11 +74,7 @@ def findmovies():
                 'id':movie.MovieID,
                 'poster_path':movie.PosterLink
             })
-        data = {
-            "status":200,
-            "movies":movie_list
-        }
-        return jsonify(data)
+        return jsonify(movie_list)
     except Exception as e:
         return jsonify({"status":500,"message":str(e)})
     
