@@ -4,33 +4,44 @@ import { Button } from 'react-bootstrap';
 import axios from 'axios';
 
 export default function init_movie() {
-    // const location = useLocation();
+    // const { moviesss } = props.location.state;
+    const [moviess, setAllMovies ]=useState([]);
+  
+    const location = useLocation();
     // const selectedGenres = location.state.selectedGenres;
-    const [movies, setAllMovies ]=useState([]);
+    useEffect(() => {
+        // Check if location.state exists before accessing its properties
+        if (location.state) {
+            // Extract the 'movies' prop from location.state and set it as the initial state
+            const { movies } = location.state;
+            setAllMovies(movies || []);
+        }
+    }, [location.state]);
+    
     const [selectedMovies, setSelectedMovies] = useState([]);
     const navigate = useNavigate();
-    useEffect(() => {
-        // GET request to fetch movies when the component mounts
-        axios.get('http://localhost:5000/api/movies')
-            .then(response => {
-                setAllMovies(response.data);
-            })
-            .catch(error => {
-                console.error('Error fetching movies:', error);
-            });
-    }, []); 
+    // useEffect(() => {
+    //     // GET request to fetch movies when the component mounts
+    //     axios.get('http://localhost:5000/api/movies')
+    //         .then(response => {
+    //             setAllMovies(response.data);
+    //         })
+    //         .catch(error => {
+    //             console.error('Error fetching movies:', error);
+    //         });
+    // }, []); 
     
-    const moviess = [
-        "The Shawshank Redemption",
-        "The Godfather",
-        "The Dark Knight",
-        "Schindler's List",
-        "Pulp Fiction",
-        "Forrest Gump",
-        "The Lord of the Rings: The Return of the King",
-        "Fight Club",
-        "Inception"
-    ];
+    // const moviess = [
+    //     "The Shawshank Redemption",
+    //     "The Godfather",
+    //     "The Dark Knight",
+    //     "Schindler's List",
+    //     "Pulp Fiction",
+    //     "Forrest Gump",
+    //     "The Lord of the Rings: The Return of the King",
+    //     "Fight Club",
+    //     "Inception"
+    // ];
     const groupedMoviess = moviess.reduce((acc, curr, index) => {
         if (index % 3 === 0) {
             acc.push([curr]);
@@ -98,7 +109,11 @@ export default function init_movie() {
                         Click here to skip
                     </Link>
                 </div>
+
             </div>
+           
+            
+
         </div>
     );
 }

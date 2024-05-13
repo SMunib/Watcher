@@ -18,12 +18,11 @@ export default function Register() {
     if (password === confirmPassword) {
       setPasswordMatch(true);
     
-      axios.post('http://localhost:5000/api/register',{username,email,password})
+      axios.post('http://localhost:5000/auth/register',{username,email,password})
       .then(result=>{console.log(result)
       if( result.data.status === 200){
         console.log(result.data.message)
         navigate('/Login');
-        
       }
       else{
         alert(result.data.message);

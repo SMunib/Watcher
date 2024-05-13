@@ -6,11 +6,22 @@ import { Link, useNavigate } from 'react-router-dom';
 
 
 export default function priority() {
+//   const moviess = [
+//     "The Shawshank Redemption",
+//     "The Godfather",
+//     "The Dark Knight",
+//     "Schindler's List",
+//     "Pulp Fiction",
+//     "Forrest Gump",
+//     "The Lord of the Rings: The Return of the King",
+//     "Fight Club",
+//     "Inception"
+// ];
     const [genress, setGenres] = useState([]);
-    const [selectedGenres, setSelectedGenres] = useState([]);
+    const [genres, setSelectedGenres] = useState([]);
     const navigate = useNavigate();
     useEffect(() => {
-      axios.get('http://localhost:5000/api/select')
+      axios.get('http://localhost:5000/genres/select')
         .then(response => {
           setGenres(response.data);
         })
@@ -37,14 +48,18 @@ export default function priority() {
               return newSelectedGenres;
             });
           };
-          
+          const [moviess, setMovies] = useState([]);
           const handleNextClick = () => {
-            console.log('Selected genres for next:', selectedGenres);
+            console.log('Selected genres for next:', genres);
 
-            axios.post('http://localhost:5000/api/selectedGenres',{selectedGenres})
+            axios.post('http://localhost:5000/genres/select',{genres})
             .then(result=>{console.log(result)
             if( result.data.status === 200){
-              console.log(result.data.message)
+              console.log(result.data.status)
+              console.log(result.data.movies)
+              console.log(result.data.movies.title)
+              setMovies(result.data.movies);
+              navigate('/init_movie', { state: { movies: moviess } });
             }
             else{
               alert(result.data.message);
@@ -52,8 +67,8 @@ export default function priority() {
           }
           )
             .catch(err=> console.log(err)) 
-
-            navigate('/init_movie');
+            // navigate('/init_movie');
+           
             };
           // const handleskip = () => {
           //   navigate('/home');
@@ -61,6 +76,7 @@ export default function priority() {
       
   return (
     <div className='main'>
+    
         <div className='imgDiv'></div>
         <div className='in'>
           <div className='select'>
@@ -71,7 +87,7 @@ export default function priority() {
                 {row.map((genre, colIndex) => (
                  <div
                  key={colIndex}
-                 className={`column ${selectedGenres.includes(genre) ? 'selected' : ''}`}
+                 className={`column ${genres.includes(genre) ? 'selected' : ''}`}
                  onClick={() => handleGenreClick(genre)}
                >
                  {genre}
@@ -87,8 +103,14 @@ export default function priority() {
                     <Link to="/home" className="skiplink mt-3 mb-2" >
                       Click here to skip
                     </Link>
+                    
                 </div>
-        </div>        
+              
+
+        </div>    
+       
+
+          
     </div>
         
   )

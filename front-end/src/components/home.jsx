@@ -21,6 +21,25 @@ export default function Home() {
    const navigate = useNavigate();
    const location = useLocation();
    const [selectedImage1, setSelectedImage1] = useState(null);
+  //  const [videoSource, setVideoSource] = useState('');
+   
+  //  useEffect(() => {
+  //   const fetchVideoList = async () => {
+  //     try {
+  //       const response = await axios.get('assets/trailer');
+  //       const files = response.data;
+  //       const randomVideo = files[Math.floor(Math.random() * files.length)];
+  //       setVideoSource(randomVideo);
+  //     } catch (error) {
+  //       console.error('Axios Error:', error);
+  //       console.error('Request Config:', error.config);
+  //       console.error('Error Response:', error.response);
+  //     }
+  //   };
+  
+  //   fetchVideoList();
+  // }, []);
+
 
    //------variables for genres-----
    const [Genre1,setGenre1]=useState([]);

@@ -27,14 +27,17 @@ const isPasswordValid = pass.includes(password);
 //     });
 // }, []);
 
-
+const [id,setId]=useState('');
   const handleSignIn = (e) => {
     e.preventDefault(); // Prevent default form submission
-    axios.post('http://localhost:5000/api/login',{email,password})
+    axios.post('http://localhost:5000/auth/login',{email,password})
     .then(result=>{
       console.log(result)
       if(result.data.status === 200){
-        if(firstTime){
+        console.log(result.userid);
+        setId(result.isFirstTime);
+        console.log(id);
+        if(result.isFirstTime){
         navigate('/priority');
         }
         else{
