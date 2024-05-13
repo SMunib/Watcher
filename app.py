@@ -1,7 +1,7 @@
 from flask import Flask
 from flask_cors import CORS
 from models import db
-from routes import auth_bp,movie_bp,search_bp,genres_bp
+from routes import auth_bp,movie_bp,search_bp,genres_bp,rating_bp
 
 app = Flask(__name__)
 CORS(app)
@@ -13,6 +13,7 @@ app.register_blueprint(auth_bp,url_prefix='/auth')
 app.register_blueprint(genres_bp,url_prefix='/genres')
 app.register_blueprint(movie_bp,url_prefix='/movie')
 app.register_blueprint(search_bp,url_prefix='/search')
+app.register_blueprint(rating_bp,url_prefix='/rating')
 
 db.init_app(app)
         

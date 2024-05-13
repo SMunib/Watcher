@@ -2,20 +2,19 @@ import React,{useEffect,useState} from 'react';
 import Swiper from 'swiper';
 import 'swiper/swiper-bundle.css';
 import MiniPage from './minipage';
+import axios from 'axios';
 
-const SearchPage = ({query,onClose}) => {
+const SearchPage = ({title,onClose}) => {
   const [selectedImage, setSelectedImage] = useState(null);
-
-
+  
+  const [imageList,setMovie]=useState([]);
 useEffect(()=>{
-  axios.post('http://localhost:5000/api/search', {query})
+  axios.post('http://localhost:5000/search/search', {title})
         .then(result => {
-          console.log(result);
-          if (result.data.status === 200) {
+          console.log(result.data);
+            setMovie(result.data);
             console.log(result.data.message);
-          } else {
-            alert(result.data.message);
-          }
+          
         })
 
 },[]);
@@ -91,7 +90,7 @@ const handleClose = () => {
   setSeen(false);
 };
 
-const imageList = [
+const imageListt = [
   { name: 'Image 1', src: 'https://image.tmdb.org/t/p/w500/ba7hnMx1HAze0QSJSNfsTBycS8U.jpg' },
   { name: 'Image 2', src: 'https://image.tmdb.org/t/p/w500/c3XBgBLzB9Sh7k7ewXY2QpfH47L.jpg' },
   { name: 'Image 3', src: 'https://image.tmdb.org/t/p/w500/b5rOkbQ0jKYvBqBf3bwJ6nXBOtx.jpg' },
@@ -119,7 +118,7 @@ const imageList = [
               {imageList.map((image, index) => (
                 <div key={index} className="swiper-slide">
                   
-                <button style={{ backgroundColor: 'transparent',  border: 'none', padding: 0, margin: 0,}} onClick={() => togglePop(image.name)}>
+                <button style={{ backgroundColor: 'transparent',  border: 'none', padding: 0, margin: 0,}} onClick={() => togglePop(image.id)}>
                     <img src={image.src} alt={image.name} />
                   </button>
               
@@ -144,8 +143,8 @@ const imageList = [
             </div>
           </div>
         </div>
-            {console.log(query)}
-            {seen && <MiniPage movieName={selectedImage} onClose={handleClose} />}
+            {console.log(selectedImage)}
+            {seen && <MiniPage MovieId={selectedImage} onClose={handleClose} />}
       </div>
       
   );

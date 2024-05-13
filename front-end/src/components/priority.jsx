@@ -6,23 +6,24 @@ import { Link, useNavigate } from 'react-router-dom';
 
 
 export default function priority() {
-//   const moviess = [
-//     "The Shawshank Redemption",
-//     "The Godfather",
-//     "The Dark Knight",
-//     "Schindler's List",
-//     "Pulp Fiction",
-//     "Forrest Gump",
-//     "The Lord of the Rings: The Return of the King",
-//     "Fight Club",
-//     "Inception"
-// ];
+  const moviess = [
+    "The Shawshank Redemption",
+    "The Godfather",
+    "The Dark Knight",
+    "Schindler's List",
+    "Pulp Fiction",
+    "Forrest Gump",
+    "The Lord of the Rings: The Return of the King",
+    "Fight Club",
+    "Inception"
+];
     const [genress, setGenres] = useState([]);
     const [genres, setSelectedGenres] = useState([]);
     const navigate = useNavigate();
     useEffect(() => {
       axios.get('http://localhost:5000/genres/select')
         .then(response => {
+          console.log(response.data);
           setGenres(response.data);
         })
         .catch(error => {
@@ -48,22 +49,25 @@ export default function priority() {
               return newSelectedGenres;
             });
           };
-          const [moviess, setMovies] = useState([]);
+          const [moviesss, setMovies] = useState([]);
           const handleNextClick = () => {
             console.log('Selected genres for next:', genres);
 
             axios.post('http://localhost:5000/genres/select',{genres})
             .then(result=>{console.log(result)
             if( result.data.status === 200){
-              console.log(result.data.status)
-              console.log(result.data.movies)
-              console.log(result.data.movies.title)
-              setMovies(result.data.movies);
-              navigate('/init_movie', { state: { movies: moviess } });
+              // console.log(result.data.status)
+              // console.log(result.data.movies)
+              // console.log(result.data.movies.title)
+              // setMovies(result.data.movies);
+              // navigate('/init_movie', { state: { movies: moviess } });
+              
             }
             else{
-              alert(result.data.message);
+              
+              // alert(result.data.message);
             }
+            navigate('/home');
           }
           )
             .catch(err=> console.log(err)) 
@@ -105,6 +109,10 @@ export default function priority() {
                     </Link>
                     
                 </div>
+                <ul>
+                
+            </ul>
+
               
 
         </div>    

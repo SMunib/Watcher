@@ -1,26 +1,25 @@
 import React, { useEffect, useState } from 'react';
 import RatingPopup from './RatingPopup';
 import axios from 'axios';
+import { userid } from './Global';
 
-export default function MiniPage({ movieName, onClose }) {
+export default function MiniPage({ MovieId, onClose }) {
   const [selectedMovie, setSelectedMovie] = useState(null);
   const [showRatingPopup, setShowRatingPopup] = useState(false); // Ensure initial value is false
-  
+  const [movie,setMovie]=useState('');
   useEffect(()=>{
-    axios.post('http://localhost:5000/api/register',{movieName})
+    axios.post('http://localhost:5000/movie/movieinfo',{MovieId})
     .then(result=>{console.log(result)
-    if( result.data.status === 200){
-      console.log(result.data.message)
-    }
-    else{
-      alert(result.data.message);
-    }
+      setMovie(result.data)
+      console.log(result.data)
+      // console.log(result.data.message)
+   
   }
   )
     .catch(err=> console.log(err))  
   },[])
 
-  const movie = {
+  const moviee = {
     name: "Inception",
     picturePath: "https://image.tmdb.org/t/p/w500/79DgItjsyH5tpA3mC2xv5gU2zlZ.jpg",
     cast: ["Leonardo DiCaprio, ", "Joseph Gordon-Levitt, ", "Ellen Page"],
@@ -66,16 +65,17 @@ export default function MiniPage({ movieName, onClose }) {
   const handleCloseRatingPopup = () => {
     setShowRatingPopup(false);
   };
-
+const [movieid,setmovieid]=useState('');
   const handleRatingSubmit = (rating) => {
     // Handle rating submission here
-    console.log("Rating submitted:", rating);
+    console.log("Rating submitted:", rating,userid,MovieId);
+    setmovieid(MovieId);
 
-    axios.post('http://localhost:5000/api/rating', { selectedMovie,rating })
+    axios.post('http://localhost:5000/rating/setrating', { rating,userid,movieid })
     .then(result => {
         console.log(result);    
         if (result.data.status === 200) {
-          
+          setShowRatingPopup(false);
         } else {
             alert(result.data.message);
         }
@@ -103,15 +103,18 @@ export default function MiniPage({ movieName, onClose }) {
           </div>
       
           <div className='contentDiv text-white pt-4'>
+            
             <div className='left_content'>
+              <h4>{movie.title}</h4>
               {movie.synopsis}
             </div>
             <div className='right_content'>
               <p>
-                Cast: {movie.cast}
+                Runtime: {movie.runtime} mins
               </p>
-              <p>Director: {movie.director}</p>
-              <p>Imbd Rating: {movie.imdbRating}</p>
+              <p>Genres: {movie.genres}</p>
+              <p>Imbd Rating: {movie.rating}</p>
+              <p>Release: {movie.release} {userid}</p>
             </div>
           </div>
         </div>

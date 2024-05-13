@@ -4,6 +4,7 @@ import { Container, Row, Col, Form, Button } from 'react-bootstrap';
 import { FiLogIn } from 'react-icons/fi';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { setGlobalVariable } from './Global';
 
 function Login() {
   const [email, setEmail] = useState('');
@@ -27,22 +28,24 @@ const isPasswordValid = pass.includes(password);
 //     });
 // }, []);
 
-const [id,setId]=useState('');
+const [id,setId]=useState();
   const handleSignIn = (e) => {
     e.preventDefault(); // Prevent default form submission
     axios.post('http://localhost:5000/auth/login',{email,password})
     .then(result=>{
       console.log(result)
       if(result.data.status === 200){
-        console.log(result.userid);
-        setId(result.isFirstTime);
-        console.log(id);
-        if(result.isFirstTime){
+        console.log(result.data.isFirstTime);
+        setId(result.data.userid);
+        console.log("hello");
+        setGlobalVariable(result.data.userid);
+
+        if(result.data.isFirstTime){
         navigate('/priority');
         }
         else{
-          navigate('/priority');
-          // navigate('/Home');
+          // navigate('/priority');
+          navigate('/Home');
         }
       }
       else {
@@ -59,7 +62,7 @@ const [id,setId]=useState('');
   return (
     <>
       <div className="app">
-
+    
         <div className="left-pane">
             <div className='imgDiv'>
                 
@@ -102,6 +105,7 @@ const [id,setId]=useState('');
 
                     <Link to="/Register" className="btn-sm mt-3 mb-2" style={{ fontSize: '14px', color: 'white', paddingLeft: '20px',  }}>
                       Don't have an account yet?
+                      
                     </Link>
 
                   </Form>

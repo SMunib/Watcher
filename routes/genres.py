@@ -20,6 +20,7 @@ def displaygenres():
     else:
         #Send three best movies according to the genres selected by the user
         genres_list = request.json.get('genres')
+        print(genres_list)
         # response = {}
         try:
             movie_list = []

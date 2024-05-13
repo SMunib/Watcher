@@ -10,9 +10,7 @@ export default function init_movie() {
     const location = useLocation();
     // const selectedGenres = location.state.selectedGenres;
     useEffect(() => {
-        // Check if location.state exists before accessing its properties
         if (location.state) {
-            // Extract the 'movies' prop from location.state and set it as the initial state
             const { movies } = location.state;
             setAllMovies(movies || []);
         }
@@ -66,8 +64,9 @@ export default function init_movie() {
     const handleNextClick = () => {
         console.log('Selected movies for next:', selectedMovies);
 
-             axios.post('http://localhost:5000/api/selectedMovies', { selectedMovies })
+             axios.post('http://localhost:5000/movie/watched', { selectedMovies })
             .then(result => {
+                console.log("helllo");
                 console.log(result);    
                 if (result.data.status === 200) {
                     navigate('/home');
@@ -77,7 +76,7 @@ export default function init_movie() {
             })
             .catch(err => console.log(err));
 
-        navigate('/home');
+        // navigate('/home');
         // Add logic to navigate to the next page or perform any other action
     };
 
@@ -109,7 +108,12 @@ export default function init_movie() {
                         Click here to skip
                     </Link>
                 </div>
-
+                {/* {moviess.map(movie => (
+                    <li key={movie.title}>
+                        <img src={movie.poster_path} alt={movie.title} />
+                        <p>{movie.title}</p>
+                    </li>
+                ))} */}
             </div>
            
             

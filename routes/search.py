@@ -12,8 +12,9 @@ def searchmovie():
         movie_list = []
         for movie in movies:
             movie_list.append({
-                'title':movie.Title,
-                'rating':movie.AvgVote
+                'id':movie.MovieID,
+                'name':movie.Title,
+                'src':movie.PosterLink
             })
         return jsonify(movie_list)
     except Exception as e:

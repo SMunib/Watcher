@@ -55,106 +55,93 @@ export default function Home() {
 
    //------get requests for sliders-------
    useEffect(() => {
-    axios.get('http://localhost:5000/api/genre1')
-      .then(response => {
-        setGenre1(response.data);
-      })
-      .catch(error => {
-        console.error('Error fetching genres:', error);
-      });
+    // axios.get('http://localhost:5000/api/genre1')
+    //   .then(response => {
+    //     setGenre1(response.data);
+    //   })
+    //   .catch(error => {
+    //     console.error('Error fetching genres:', error);
+    //   });
 
 
-      axios.get('http://localhost:5000/api/genre2')
-      .then(response => {
-        setGenre2(response.data);
-      })
-      .catch(error => {
-        console.error('Error fetching genres:', error);
-      });
+    //   axios.get('http://localhost:5000/api/genre2')
+    //   .then(response => {
+    //     setGenre2(response.data);
+    //   })
+    //   .catch(error => {
+    //     console.error('Error fetching genres:', error);
+    //   });
     
-      axios.get('http://localhost:5000/api/genre3')
-      .then(response => {
-        setGenre3(response.data);
-      })
-      .catch(error => {
-        console.error('Error fetching genres:', error);
-      });
+    //   axios.get('http://localhost:5000/api/genre3')
+    //   .then(response => {
+    //     setGenre3(response.data);
+    //   })
+    //   .catch(error => {
+    //     console.error('Error fetching genres:', error);
+    //   });
 
-      axios.post('http://localhost:5000/api/genre4', {genre:"Crime"})
+      axios.post('http://localhost:5000/movie/moviesbycategory', {genre:"Crime"})
         .then(result => {
           console.log(result);
-          if (result.data.status === 200) {
-            console.log(result.data.message);
-          } else {
-            alert(result.data.message);
-          }
+          // if (result.data.status === 200) {
+            setGenre4(result.data)
+            // console.log(result.data.message);
+            
+          // } else {
+          //   alert(result.data.message);
+          // }
         })
 
-        .catch(err => console.log(err));
-        axios.post('http://localhost:5000/api/genre5', {genre:"Action"})
+        // .catch(err => console.log(err));
+        axios.post('http://localhost:5000/movie/moviesbycategory', {genre:"Action"})
         .then(result => {
           console.log(result);
-          if (result.data.status === 200) {
-            console.log(result.data.message);
-          } else {
-            alert(result.data.message);
-          }
-        })
-        .catch(err => console.log(err));
-
-        axios.post('http://localhost:5000/api/genre6', {genre:"Mystery"})
-        .then(result => {
-          console.log(result);
-          if (result.data.status === 200) {
-            console.log(result.data.message);
-          } else {
-            alert(result.data.message);
-          }
+          setGenre5(result.data)
+            // console.log(result.data.message);
         })
         .catch(err => console.log(err));
 
-        axios.post('http://localhost:5000/api/genre7', {genre:"Animation"})
+        axios.post('http://localhost:5000/movie/moviesbycategory', {genre:"Mystery"})
         .then(result => {
           console.log(result);
-          if (result.data.status === 200) {
-            console.log(result.data.message);
-          } else {
-            alert(result.data.message);
-          }
+          setGenre6(result.data)
+            // console.log(result.data.message);
+          
         })
         .catch(err => console.log(err));
 
-        axios.post('http://localhost:5000/api/genre8', {genre:"Horror"})
+        axios.post('http://localhost:5000/movie/moviesbycategory', {genre:"Animation"})
         .then(result => {
           console.log(result);
-          if (result.data.status === 200) {
-            console.log(result.data.message);
-          } else {
-            alert(result.data.message);
-          }
+            setGenre7(result.data)
+            // console.log(result.data.message);
+        })
+        .catch(err => console.log(err));
+
+        axios.post('http://localhost:5000/movie/moviesbycategory', {genre:"Horror"})
+        .then(result => {
+          console.log(result);
+          setGenre8(result.data)
+            // console.log(result.data.message);
+          
         })
         .catch(err => console.log(err));
 
 
-        axios.post('http://localhost:5000/api/genre9', {genre:"Romance"})
+        axios.post('http://localhost:5000/movie/moviesbycategory', {genre:"Romance"})
         .then(result => {
           console.log(result);
-          if (result.data.status === 200) {
-            console.log(result.data.message);
-          } else {
-            alert(result.data.message);
-          }
+            setGenre9(result.data)
+            // console.log(result.data.message);
+          
         })
         .catch(err => console.log(err));
 
-        axios.post('http://localhost:5000/api/genre10', {genre:"Fantasy"})
+        axios.post('http://localhost:5000/movie/moviesbycategory', {genre:"Fantasy"})
         .then(result => {
           console.log(result);
-          if (result.data.status === 200) {
-            console.log(result.data.message);
-          } else {
-            alert(result.data.message);
-          }
+            setGenre10(result.data)
+            // console.log(result.data.message);
         })
         .catch(err => console.log(err));
      
@@ -260,6 +247,7 @@ export default function Home() {
   const handleClose = () => {
     setSeen(false);
   };
+
   const imageList = [
     { name: 'Image 1', src: 'https://image.tmdb.org/t/p/w500/ba7hnMx1HAze0QSJSNfsTBycS8U.jpg' },
     { name: 'Image 2', src: 'https://image.tmdb.org/t/p/w500/c3XBgBLzB9Sh7k7ewXY2QpfH47L.jpg' },
@@ -343,7 +331,7 @@ export default function Home() {
           
         </div>
         {/* 1 */}
-        <div className="container1-fluid"  style={{ paddingTop: '20px' }}>
+        {/* <div className="container1-fluid"  style={{ paddingTop: '20px' }}>
           <p color='white'>Popular on Netflix</p>
           <div className="swiper-container">
             <div className="swiper-wrapper">
@@ -356,10 +344,10 @@ export default function Home() {
                 </div>
               ))}
             </div>
-            {/* <div className="swiper-button-next"></div>
-            <div className="swiper-button-prev"></div> */}
+             <div className="swiper-button-next"></div>
+            <div className="swiper-button-prev"></div> 
           </div>
-        </div>
+        </div> */}
 
 
             {/* 2 */}
@@ -408,10 +396,10 @@ export default function Home() {
 
              {/* 4------ */}
         <div className="container1-fluid " style={{ paddingTop: '50px' }}>
-          <p color='white'>Popular on Netflix</p>
+          <p color='white'>Crime</p>
           <div className="swiper-container">
             <div className="swiper-wrapper">
-              {imageList.map((image, index) => (
+              {Genre4.map((image, index) => (
                 <div key={index} className="swiper-slide">
                   
                 <button style={{ backgroundColor: 'transparent',  border: 'none', padding: 0, margin: 0,}} onClick={() => togglePop(image.name)}>
@@ -433,7 +421,7 @@ export default function Home() {
           <p color='white'>Popular on Netflix</p>
           <div className="swiper-container">
             <div className="swiper-wrapper">
-              {imageList.map((image, index) => (
+              {Genre5.map((image, index) => (
                 <div key={index} className="swiper-slide">
                   
                 <button style={{ backgroundColor: 'transparent',  border: 'none', padding: 0, margin: 0,}} onClick={() => togglePop(image.name)}>
@@ -456,7 +444,7 @@ export default function Home() {
           <p color='white'>Popular on Netflix</p>
           <div className="swiper-container">
             <div className="swiper-wrapper">
-              {imageList.map((image, index) => (
+              {Genre6.map((image, index) => (
                 <div key={index} className="swiper-slide">
                   
                 <button style={{ backgroundColor: 'transparent',  border: 'none', padding: 0, margin: 0,}} onClick={() => togglePop(image.name)}>
@@ -477,7 +465,7 @@ export default function Home() {
           <p color='white'>Popular on Netflix</p>
           <div className="swiper-container">
             <div className="swiper-wrapper">
-              {imageList.map((image, index) => (
+              {Genre7.map((image, index) => (
                 <div key={index} className="swiper-slide">
                   
                 <button style={{ backgroundColor: 'transparent',  border: 'none', padding: 0, margin: 0,}} onClick={() => togglePop(image.name)}>
@@ -498,7 +486,7 @@ export default function Home() {
           <p color='white'>Popular on Netflix</p>
           <div className="swiper-container">
             <div className="swiper-wrapper">
-              {imageList.map((image, index) => (
+              {Genre8.map((image, index) => (
                 <div key={index} className="swiper-slide">
                   
                 <button style={{ backgroundColor: 'transparent',  border: 'none', padding: 0, margin: 0,}} onClick={() => togglePop(image.name)}>
@@ -520,7 +508,7 @@ export default function Home() {
           <p color='white'>Popular on Netflix</p>
           <div className="swiper-container">
             <div className="swiper-wrapper">
-              {imageList.map((image, index) => (
+              {Genre9.map((image, index) => (
                 <div key={index} className="swiper-slide">
                   
                 <button style={{ backgroundColor: 'transparent',  border: 'none', padding: 0, margin: 0,}} onClick={() => togglePop(image.name)}>
@@ -541,7 +529,7 @@ export default function Home() {
           <p color='white'>Popular on Netflix</p>
           <div className="swiper-container">
             <div className="swiper-wrapper">
-              {imageList.map((image, index) => (
+              {Genre10.map((image, index) => (
                 <div key={index} className="swiper-slide">
                   
                 <button style={{ backgroundColor: 'transparent',  border: 'none', padding: 0, margin: 0,}} onClick={() => togglePop(image.name)}>
@@ -560,9 +548,9 @@ export default function Home() {
 
 
 
-        {seen && <MiniPage movieName={selectedImage} onClose={handleClose} />}
+        {seen && <MiniPage MovieId={selectedImage} onClose={handleClose} />}
        { console.log(seen1)}
-        {seen1 && <SearchPage query={searchQuery} onClose={handleClose1}/>}
+        {seen1 && <SearchPage title={searchQuery} onClose={handleClose1}/>}
       </div> 
     </div> 
   );

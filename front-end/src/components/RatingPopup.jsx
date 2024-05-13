@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 
+
 export default function RatingPopup({ onClose, onSubmit }) {
   const [rating, setRating] = useState('');
-
+ 
   const handleChange = (event) => {
     setRating(event.target.value);
   };
@@ -23,6 +24,7 @@ export default function RatingPopup({ onClose, onSubmit }) {
 
   return (
     <div className="modal-overlay">
+      
       <div className="popup2">
         <div className="popup-inner rating-popup2">
           <button onClick={onClose} type='button' className="btn-close btn-close-white" aria-label="Close"></button>

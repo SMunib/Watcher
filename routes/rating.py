@@ -9,6 +9,7 @@ def setRating():
     rating = request.json.get('rating')
     userid = request.json.get('userid')
     movieid = request.json.get('movieid')
+    print(userid)
     new_rating = UserRating(userid = userid, movieid = movieid, whenWatched = datetime.now(), rating = rating)
     try:
         db.session.add(new_rating)

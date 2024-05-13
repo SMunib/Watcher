@@ -71,8 +71,8 @@ def findmovies():
         movies = Movies.query.filter(Movies.Genres.contains(genre)).order_by(func.random()).limit(16).all()
         for movie in movies:
             movie_list.append({
-                'id':movie.MovieID,
-                'poster_path':movie.PosterLink
+                'name':movie.MovieID,
+                'src':movie.PosterLink
             })
         return jsonify(movie_list)
     except Exception as e:
@@ -81,9 +81,11 @@ def findmovies():
 @movie_bp.route('/movieinfo',methods = ['POST'])
 def sendInfo():
     id = request.json.get('MovieId')
+    print(id)
     try:
         movie = Movies.query.get(id)
-        info = {
+        data = {
+            'picturePath':movie.PosterLink,
             'title':movie.Title,
             'synopsis':movie.Synopsis,
             'runtime': movie.RunTime,
@@ -91,7 +93,7 @@ def sendInfo():
             'rating':movie.AvgVote,
             'release':movie.ReleaseDate
         }
-        return jsonify(info)
+        return jsonify(data)
     except Exception as e:
         error = {
             "status":500,
