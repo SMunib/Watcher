@@ -20,18 +20,21 @@ def displaygenres():
     else:
         #Send three best movies according to the genres selected by the user
         genres_list = request.json.get('genres')
-        response = {}
+        # response = {}
         try:
+            movie_list = []
             for genre in genres_list:
                 movies = Movies.query.filter(Movies.Genres.contains(genre)).order_by(Movies.AvgVote.desc()).limit(3).all()
-                movie_list = []
                 for movie in movies:
                     movie_list.append({
                         'title':movie.Title,
                         'poster_path':movie.PosterLink
                     })
-                response[genre] = movie_list
-            return jsonify(response)
+            data ={
+                    "status":200,
+                    "movies":movie_list
+                }    
+            return jsonify(data)
         except Exception as e:
             return jsonify({"error": str(e)})
 

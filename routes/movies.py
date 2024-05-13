@@ -59,3 +59,7 @@ def watchedMovies():
             "message":str(e)
         }
         return jsonify(error)
+
+@movie_bp.route('/moviesbycategory',methods = ['GET'])
+def findmovies():
+    i = 0
