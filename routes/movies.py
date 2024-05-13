@@ -14,7 +14,8 @@ def displaymovies():
             movie_list = []
             for movie in movies:
                 movie_list.append({
-                    'title':movie.Title
+                    'id':movie.MovieID,
+                    'poster_path':movie.PosterLink
                 })
             return jsonify(movie_list)
         except Exception as e:

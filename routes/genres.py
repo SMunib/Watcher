@@ -25,14 +25,9 @@ def displaygenres():
             movie_list = []
             for genre in genres_list:
                 movies = Movies.query.filter(Movies.Genres.contains(genre)).order_by(Movies.AvgVote.desc()).limit(3).all()
-                for movie in movies:
-                    movie_list.append({
-                        'title':movie.Title,
-                        'poster_path':movie.PosterLink
-                    })
             data ={
                     "status":200,
-                    "movies":movie_list
+                    "movies":movies
                 }    
             return jsonify(data)
         except Exception as e:
