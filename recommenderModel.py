@@ -1,11 +1,76 @@
 import os
-import math
+import json
 import sqlite3
 import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.cluster import KMeans
 from sklearn.metrics.pairwise import linear_kernel
 from sklearn.feature_extraction.text import TfidfVectorizer
+
+
+class Trainer:
+
+    def __init__(self, settingsPath):
+        self.settingsFilePath = settingsPath
+
+        with open(self.settingsFilePath, 'r') as settings:
+            data = json.load(settings)
+
+        self.minVotes = data["minVotes"] 
+        self.minAvgRating = data["minAvgRating"] 
+        self.clustersNo = data["clustersNo"] 
+        self.acceptingSimilarity = data["acceptingSimilarity"]
+        
+
+    def saveSettings(self):
+        data = {
+                "minVotes": self.minVotes,
+                "minAvgRating": self.minAvgRating,
+                "clustersNo": self.clustersNo,
+                "acceptingSimilarity": self.acceptingSimilarity
+            }
+
+        with open(self.settingsFilePath, "w") as settings:
+            json.dump(data, settings)
+
+    def fit(self, cursor, userID):
+        watchedMovies = []
+        recommendedMoives = []
+        movieCount = 0
+        ratingSum = 0
+
+        cursor.execute("SELECT watchedMovies FROM users WHERE id = ?", (userID, ))
+        results = cursor.fetchall()
+        watchedMovies = convertTupleToList(results)
+        
+        cursor.execute("SELECT recommendedMovies FROM users WHERE id = ?", (userID, ))
+        results = cursor.fetchall()
+        recommendedMoives = convertTupleToList(results)
+
+        for movie in recommendedMoives:
+            if set([movie]).issubset(set(watchedMovies)):
+                cursor.execute("SELECT AvgVote FROM movies WHERE movieID = ?", (movie, ))
+                results = cursor.fetchall()
+
+                ratingSum = ratingSum + results[0][0]
+                movieCount += 1
+        
+        accuracy = (ratingSum / movieCount)
+
+        if accuracy < self.minAvgRating and (self.minAvgRating - accuracy) < 1:
+            self.minAvgRating += 0.2
+        elif accuracy < self.minAvgRating and (self.minAvgRating - accuracy) > 1:
+            self.minAvgRating += 0.4
+            self.acceptingSimilarity += 0.01
+        elif accuracy > self.minAvgRating and (accuracy - self.minAvgRating) < 1:
+            self.minAvgRating -= 0.2
+            self.acceptingSimilarity -= 0.002
+        elif accuracy > self.minAvgRating and (accuracy - self.minAvgRating) > 1:
+            self.minAvgRating -= 0.4
+            self.acceptingSimilarity -= 0.004
+
+        self.saveSettings()
+
 
 # Helping functions to manipulate data
 def convertTupleToList(tuple):
@@ -18,6 +83,10 @@ def convertTupleToString(tuple):
     Str = Str.replace("'", "")
     return Str
 
+def convertListToString(list):
+    string = ', '.join(str(num) for num in list)
+    return string
+
 def relativeRating(avg, userrating):
     xRelative = avg - userrating
     return xRelative
@@ -28,14 +97,17 @@ def scaleRelativeRating(minRR, maxRR, relativeRating, scaler = 10):
 
 
 # AI Model
-def recommendMoives(userID):
+def recommendMovies(userID):
     # Determining directory for accesing WatcherDB.db in /instance folder
     currentDir = os.getcwd()
+    dbSettings = 'dbSettings.json'
     dbFile = 'WatcherDB.db'
     dbFolder = 'instance'
     dbPath = os.path.join(currentDir, dbFolder)
     dbPath = os.path.join(dbPath, dbFile)
-
+    settingsPath = os.path.join(currentDir, dbFolder)
+    settingsPath = os.path.join(settingsPath, dbSettings)
+    
     # Establishing DB connection
     try:
         dbConnection = sqlite3.connect(dbPath)
@@ -44,21 +116,24 @@ def recommendMoives(userID):
     except sqlite3.Error as error:
         return 'Database connection failed!'
     
+    trainer = Trainer(settingsPath)
+    trainer.fit(dbCursor, userID)
+
     # Variables needed by model
     coldStart = None
-    minimumVotes = 50
     minAVColdStart = 7.5
-    minAvgVote = 6.5
     minNumMoviesColdStart = 10
-    recommendedMovies = []
-    userWatchedMovies = []
+    minimumVotes = trainer.minVotes
+    numClusters = trainer.clustersNo
+    acceptingSimilarity = trainer.acceptingSimilarity
+    minAvgVote = trainer.minAvgRating
     X = 0
     Y = 0
+    recommendedMovies = []
+    userWatchedMovies = []
     allRelativeRatings = []
     allAvgRatings = []
     allMovieIDs = []
-    numClusters = 4
-    acceptingSimilarity = 0.015
     #
 
 
@@ -92,9 +167,12 @@ def recommendMoives(userID):
                     if count >= minNumMoviesColdStart:
                         break
             
-            return recommendedMovies
+            recommendedMovies = list(set(recommendedMovies))
+            dbCursor.execute("UPDATE users SET recommendedMovies = ? WHERE id = ?", (convertListToString(recommendedMovies), userID))
+            dbConnection.commit()
+            return list(set(recommendedMovies))
         else:
-            return recommendedMovies
+            return list(set(recommendedMovies))
     
     else:
         # Getting all movies user has watched
@@ -139,7 +217,7 @@ def recommendMoives(userID):
                     moviesGenres = row[1].split(", ")
 
                     # Getting highest rated n movies for the genre
-                    if set([genre]).issubset(set(moviesGenres)) and not(row[0] in userWatchedMovies) :
+                    if set([genre]).issubset(set(moviesGenres)) and not(row[0] in userWatchedMovies) and row[3] > minAvgVote:
                         allRelativeRatings.append(relativeRating(row[3], userMovieRating))
                         allAvgRatings.append(row[3])
                         allMovieIDs.append(row[0])
@@ -227,18 +305,25 @@ def recommendMoives(userID):
                 
             # Testing to run once!
             # break;
-        
-        
+
+        recommendedMovies = list(set(recommendedMovies))
+        dbCursor.execute("UPDATE users SET recommendedMovies = ? WHERE id = ?", (convertListToString(recommendedMovies), userID))
+        dbConnection.commit()
         dbConnection.close()
-        return recommendedMovies
+        # convertListToString(recommendedMovies)
+        # print(recommendedMovies)
+        return list(set(recommendedMovies))
 
 def recommendMoviesOnLastWatched(userID):
     # Determining directory for accesing WatcherDB.db in /instance folder
     currentDir = os.getcwd()
+    dbSettings = 'dbSettings.json'
     dbFile = 'WatcherDB.db'
     dbFolder = 'instance'
     dbPath = os.path.join(currentDir, dbFolder)
     dbPath = os.path.join(dbPath, dbFile)
+    settingsPath = os.path.join(currentDir, dbFolder)
+    settingsPath = os.path.join(settingsPath, dbSettings)
 
     # Establishing DB connection
     try:
@@ -248,18 +333,21 @@ def recommendMoviesOnLastWatched(userID):
     except sqlite3.Error as error:
         return 'Database connection failed!'
     
+    trainer = Trainer(settingsPath)
+    trainer.fit(dbCursor, userID)
+
     # Variables needed by model
-    coldStart = None
-    minimumVotes = 50
-    recommendedMovies = []
-    userWatchedMovies = []
+    minimumVotes = trainer.minVotes
+    minAvgVote = trainer.minAvgRating
+    numClusters = trainer.clustersNo
+    acceptingSimilarity = trainer.acceptingSimilarity
     X = 0
     Y = 0
+    recommendedMovies = []
+    userWatchedMovies = []
     allRelativeRatings = []
     allAvgRatings = []
     allMovieIDs = []
-    numClusters = 4
-    acceptingSimilarity = 0.015
     #
 
 
@@ -274,8 +362,8 @@ def recommendMoviesOnLastWatched(userID):
     dbCursor.execute("SELECT watchedMovies FROM users WHERE id = ?", (userID, ))
     userWatchedMovies = dbCursor.fetchall()
     userWatchedMovies = convertTupleToList(userWatchedMovies)
-    print(userWatchedMovies.pop())
     movie = userWatchedMovies.pop()
+
     # iterating for each movie Collaborative then Content based filtering and generating recommendations based on each movie
     
     clusteringCoordinates = []
@@ -313,7 +401,7 @@ def recommendMoviesOnLastWatched(userID):
             moviesGenres = row[1].split(", ")
 
             # Getting highest rated n movies for the genre
-            if set([genre]).issubset(set(moviesGenres)) and not(row[0] in userWatchedMovies) :
+            if set([genre]).issubset(set(moviesGenres)) and not(row[0] in userWatchedMovies) and row[3] > minAvgVote:
                 allRelativeRatings.append(relativeRating(row[3], userMovieRating))
                 allAvgRatings.append(row[3])
                 allMovieIDs.append(row[0])
@@ -401,12 +489,55 @@ def recommendMoviesOnLastWatched(userID):
         
     # Testing to run once!
     # break;
-
-
+    recommendedMovies = list(set(recommendedMovies))
+    dbCursor.execute("UPDATE users SET lastMovieRecommendations = ? WHERE id = ?", (convertListToString(recommendedMovies), userID))
+    dbConnection.commit()
     dbConnection.close()
-    return recommendedMovies
+    return list(set(recommendedMovies))
 
 
-# Implementation #
-# print("Recommended Movies: ", len(recommendMoives(4)))
-# print(len(recommendMoviesOnLastWatched(4)))
+
+
+
+
+
+
+
+############################## TESTING AND IMPLEMENTATION ##############################
+# print("Recommended Movies: ", recommendMovies(4))
+# print("No. Movies: ", len(recommendMoives(4)))
+# recommendMoviesOnLastWatched(4)
+
+# currentDir = os.getcwd()
+# dbFile = 'WatcherDB.db'
+# dbSettings = 'dbSettings.json'
+# dbFolder = 'instance'
+# dbPath = os.path.join(currentDir, dbFolder)
+# dbPath = os.path.join(dbPath, dbFile)
+# settingsPath = os.path.join(currentDir, dbFolder)
+# settingsPath = os.path.join(settingsPath, dbSettings)
+
+# minVotes = 40
+
+# data = {
+#     "minVotes": 50,
+#     "minAvgRating": 7.0,
+#     "clustersNo": 4,
+#     "acceptingSimilarity": 0.015
+# }
+
+# with open(settingsPath, "w") as settings:
+#     json.dump(data, settings)
+
+# # Establishing DB connection
+# try:
+#     dbConnection = sqlite3.connect(dbPath)
+#     dbCursor = dbConnection.cursor()
+
+# except sqlite3.Error as error:
+#     print('Database connection failed!')
+
+# t = Trainer(settingsPath)
+# print(t.minAvgRating, t.acceptingSimilarity)
+# t.fit(dbCursor, 4)
+# print(t.minAvgRating, t.acceptingSimilarity)
