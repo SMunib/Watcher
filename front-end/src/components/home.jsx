@@ -11,6 +11,7 @@ import 'swiper/swiper-bundle.css';
 import MiniPage from './minipage';
 import SearchPage from './Search';
 import axios from 'axios';
+import { userid } from './Global';
 
 export default function Home() {
   const [navColour, updateNavbar] = useState(false);
@@ -55,30 +56,30 @@ export default function Home() {
 
    //------get requests for sliders-------
    useEffect(() => {
-    // axios.get('http://localhost:5000/api/genre1')
-    //   .then(response => {
-    //     setGenre1(response.data);
-    //   })
-    //   .catch(error => {
-    //     console.error('Error fetching genres:', error);
-    //   });
+    console.log(userid)
+    axios.post('http://localhost:5000/movie/recommend', userid)
+        .then(result => {
+          console.log(result);
+          setGenre1(result.data)
+            // console.log(result.data.message);
+        })
+        .catch(err => console.log(err));
 
-
-    //   axios.get('http://localhost:5000/api/genre2')
-    //   .then(response => {
-    //     setGenre2(response.data);
-    //   })
-    //   .catch(error => {
-    //     console.error('Error fetching genres:', error);
-    //   });
+      axios.post('http://localhost:5000/movie/LastWatched',userid)
+      .then(response => {
+        setGenre2(response.data);
+      })
+      .catch(error => {
+        console.error('Error fetching genres:', error);
+      });
     
-    //   axios.get('http://localhost:5000/api/genre3')
-    //   .then(response => {
-    //     setGenre3(response.data);
-    //   })
-    //   .catch(error => {
-    //     console.error('Error fetching genres:', error);
-    //   });
+      axios.get('http://localhost:5000/movie/display')
+      .then(response => {
+        setGenre3(response.data);
+      })
+      .catch(error => {
+        console.error('Error fetching genres:', error);
+      });
 
       axios.post('http://localhost:5000/movie/moviesbycategory', {genre:"Crime"})
         .then(result => {
@@ -331,8 +332,8 @@ export default function Home() {
           
         </div>
         {/* 1 */}
-        {/* <div className="container1-fluid"  style={{ paddingTop: '20px' }}>
-          <p color='white'>Popular on Netflix</p>
+        <div className="container1-fluid"  style={{ paddingTop: '20px' }}>
+          <p color='white'>Recommendations</p>
           <div className="swiper-container">
             <div className="swiper-wrapper">
               {imageList.map((image, index) => (
@@ -344,16 +345,16 @@ export default function Home() {
                 </div>
               ))}
             </div>
-             <div className="swiper-button-next"></div>
-            <div className="swiper-button-prev"></div> 
+             {/* <div className="swiper-button-next"></div>
+            <div className="swiper-button-prev"></div>  */}
           </div>
-        </div> */}
+        </div>
 
 
             {/* 2 */}
 
         <div className="container1-fluid " style={{ paddingTop: '50px' }}>
-          <p color='white'>Popular on Netflix</p>
+          <p color='white'>Recommendation based on Last Watched</p>
           <div className="swiper-container">
             <div className="swiper-wrapper">
               {imageList.map((image, index) => (
@@ -374,10 +375,10 @@ export default function Home() {
         {/* 3------ */}
 
         <div className="container1-fluid " style={{ paddingTop: '50px' }}>
-          <p color='white'>Popular on Netflix</p>
+          <p color='white'>Top Rated</p>
           <div className="swiper-container">
             <div className="swiper-wrapper">
-              {imageList.map((image, index) => (
+              {Genre3.map((image, index) => (
                 <div key={index} className="swiper-slide">
                   
                 <button style={{ backgroundColor: 'transparent',  border: 'none', padding: 0, margin: 0,}} onClick={() => togglePop(image.name)}>
@@ -418,7 +419,7 @@ export default function Home() {
              {/* 5------ */}
 
         <div className="container1-fluid " style={{ paddingTop: '50px' }}>
-          <p color='white'>Popular on Netflix</p>
+          <p color='white'>Action</p>
           <div className="swiper-container">
             <div className="swiper-wrapper">
               {Genre5.map((image, index) => (
@@ -441,7 +442,7 @@ export default function Home() {
              {/* 6------ */}
 
         <div className="container1-fluid " style={{ paddingTop: '50px' }}>
-          <p color='white'>Popular on Netflix</p>
+          <p color='white'>Mystery</p>
           <div className="swiper-container">
             <div className="swiper-wrapper">
               {Genre6.map((image, index) => (
@@ -462,7 +463,7 @@ export default function Home() {
              {/* 7------ */}
 
         <div className="container1-fluid " style={{ paddingTop: '50px' }}>
-          <p color='white'>Popular on Netflix</p>
+          <p color='white'>Animation</p>
           <div className="swiper-container">
             <div className="swiper-wrapper">
               {Genre7.map((image, index) => (
@@ -483,7 +484,7 @@ export default function Home() {
              {/* 8------ */}
 
         <div className="container1-fluid " style={{ paddingTop: '50px' }}>
-          <p color='white'>Popular on Netflix</p>
+          <p color='white'>Horror</p>
           <div className="swiper-container">
             <div className="swiper-wrapper">
               {Genre8.map((image, index) => (
@@ -505,7 +506,7 @@ export default function Home() {
 
 
         <div className="container1-fluid " style={{ paddingTop: '50px' }}>
-          <p color='white'>Popular on Netflix</p>
+          <p color='white'>Romance</p>
           <div className="swiper-container">
             <div className="swiper-wrapper">
               {Genre9.map((image, index) => (
@@ -526,7 +527,7 @@ export default function Home() {
              {/* 10------ */}
 
         <div className="container1-fluid " style={{ paddingTop: '50px' }}>
-          <p color='white'>Popular on Netflix</p>
+          <p color='white'>Fantasy</p>
           <div className="swiper-container">
             <div className="swiper-wrapper">
               {Genre10.map((image, index) => (

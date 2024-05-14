@@ -1,6 +1,9 @@
 from flask import Blueprint, request,jsonify
 from models import Movies,Users,db
 from sqlalchemy.sql.expression import func
+# from recommenderModel import recommendMovies,recommendMoviesOnLastWatched
+# from recommenderModel import recommendMovies,recommendMoviesOnLastWatched
+from recommenderModel import recommendMovies,recommendMoviesOnLastWatched
 
 movie_bp = Blueprint('movies',__name__)    
 
@@ -23,12 +26,12 @@ def displaymovies():
     else:
         #Top rated movies
         try:
-            movies = Movies.query.order_by(Movies.AvgVote.desc()).limit(50).all()
+            movies = Movies.query.order_by(Movies.AvgVote.desc()).limit(16).all()
             movie_list = []
             for movie in movies:
                 movie_list.append({
-                    'title':movie.Title,
-                    'rating':movie.AvgVote
+                    'name':movie.MovieID,
+                    'src':movie.PosterLink
                 })
             return jsonify(movie_list)
         except Exception as e:
@@ -114,6 +117,51 @@ def addToFav():
             "message":"Added to List"
         }
         return jsonify(data)
+    except Exception as e:
+        error = {
+            "status":500,
+            "message":str(e)
+        }
+        return jsonify(error)
+
+@movie_bp.route('/recommend',methods = ['POST'])
+def recommend():
+    userid = request.json.get('userid')
+    print(userid)
+    try:
+        movies = recommendMovies(userid)
+        # print(movies)
+        movie_list = []
+        for i in range(16):
+            movie_list.append(movies[i])
+        
+        # print(movie_list)
+        return jsonify(movie_list)
+    except Exception as e:
+        error = {
+            "status":500,
+            "message":str(e)
+        }
+        return jsonify(error)
+
+@movie_bp.route('/lastWatched',methods = ['POST'])
+def recommendLast():
+    userid = request.json.get('userid')
+    try:
+        movies = recommendMoviesOnLastWatched(userid)
+        print(movies)
+        movie_list = []
+        count = 0
+        for movie in movies:
+            count += 1
+
+            if count >= 16:
+                break
+
+        movie_list.append(movie)
+
+        print(movie_list)
+        return jsonify(movie_list)
     except Exception as e:
         error = {
             "status":500,

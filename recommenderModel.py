@@ -45,8 +45,12 @@ class Trainer:
         
         cursor.execute("SELECT recommendedMovies FROM users WHERE id = ?", (userID, ))
         results = cursor.fetchall()
+        # print(results[0][0])
+        if results[0][0] == None:
+            return
+        
         recommendedMoives = convertTupleToList(results)
-
+        
         for movie in recommendedMoives:
             if set([movie]).issubset(set(watchedMovies)):
                 cursor.execute("SELECT AvgVote FROM movies WHERE movieID = ?", (movie, ))
@@ -504,7 +508,7 @@ def recommendMoviesOnLastWatched(userID):
 
 
 ############################## TESTING AND IMPLEMENTATION ##############################
-# print("Recommended Movies: ", recommendMovies(4))
+print("Recommended Movies: ", recommendMovies(4))
 # print("No. Movies: ", len(recommendMoives(4)))
 # recommendMoviesOnLastWatched(4)
 
@@ -540,4 +544,4 @@ def recommendMoviesOnLastWatched(userID):
 # t = Trainer(settingsPath)
 # print(t.minAvgRating, t.acceptingSimilarity)
 # t.fit(dbCursor, 4)
-# print(t.minAvgRating, t.acceptingSimilarity)
+# print(t.minAvgRating, t.acceptingSimilarity)                
